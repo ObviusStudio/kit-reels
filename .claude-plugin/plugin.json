@@ -1,7 +1,7 @@
 {
   "name": "kit-reels",
-  "version": "0.4.0",
-  "description": "Un reel fini et vérifié avec Claude Code : format et objectif d'abord, script écrit pour être dit, voix ElevenLabs v3 scène par scène ou ta vidéo face caméra montée, vraies captures, onze styles d'illustration proposés selon le sujet et ta charte, images et vidéos libres de droit avec leur licence, scène 3D, son à -14 LUFS ; en 9:16, 4:5, 1:1 ou 16:9, à 30 ou 60 images par seconde.",
+  "version": "0.4.1",
+  "description": "Un reel fini et vérifié avec Claude Code : format et objectif d'abord, script écrit pour être dit, voix ElevenLabs v3 scène par scène ou ta vidéo face caméra montée, vraies captures, douze styles d'illustration proposés selon le sujet et ta charte, images et vidéos libres de droit avec leur licence, scène 3D, son à -14 LUFS ; en 9:16, 4:5, 1:1 ou 16:9, à 30 ou 60 images par seconde.",
   "author": {
     "name": "Obvius Studio",
     "email": "hello@obvius.studio"

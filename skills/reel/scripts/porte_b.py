@@ -1,5 +1,5 @@
 """Les contrôles de la porte B que verifier.py n'avait pas (references/controles.md) : image 0, zones de sécurité, note de
-mouvement de chaque seconde, déterminisme de la composition, tirets longs. Chacun rend (ok, texte) ; verifier.py les écrit dans
+rythme de chaque seconde (mouvement et arrivées), déterminisme de la composition, tirets longs. Chacun rend (ok, texte) ; verifier.py les écrit dans
 son rapport.
 
 Usage seul :
@@ -17,6 +17,11 @@ CARTE = 2.0  # la carte de fin (1,5 à 2 s) tient presque immobile : ses seconde
 SOMBRE, ECART_SOMBRE, ECART_CLAIR_BAS, ECART_CLAIR_HAUT = 128, 50, 20, 8
 NOIR = 16  # luminance d'un noir pur en vidéo
 COTE, MOU = 96, 0.6  # images en gris 96x96 à 30 i/s ; une seconde sous 0,6 de mouvement est faible (sources.md, C10)
+# La note de rythme (03/11/2026, sources.md C12) : un pondéré du mouvement et des arrivées d'information (un mot, un objet, une
+# étiquette qui apparaît). Note d'une seconde = moitié mouvement (sa note / 0,6, plafonnée à 1) + moitié arrivées (2 par seconde
+# valent 1) ; une seconde sous 0,5 est faible : soit elle bouge (0,6), soit deux éléments arrivent, soit un élément et un peu de
+# mouvement. Une arrivée : entre 0,05 % et 25 % des pixels (gris 180x320) changent de plus de 40 niveaux, après 3 images calmes.
+RYTHME, LARGE, HAUT, SAUT, PEU, BEAUCOUP, CALME = 0.5, 180, 320, 40, 0.0005, 0.25, 3
 # témoin du mouvement : les images 29 à 60 sont la même, la seconde de 1 à 2 s est figée, les autres bougent
 GEL = "testsrc2=d=4:s=320x240:r=30,split[a][b];[a][b]freezeframes=first=30:last=60:replace=29"
 INTERDITS_CODE = re.compile(r"Math\.random|Date\.now|performance\.now")
@@ -68,20 +73,40 @@ def notes(film):
     return [sum(t) / len(t) for t in (d[max(0, 30 * k - 1):30 * k + 29] for k in range(len(im) // 30))]
 
 
+def arrivees(film):
+    """Le nombre d'arrivées d'information de chaque seconde complète (un changement local après des images calmes)."""
+    r = subprocess.run(["ffmpeg", "-v", "error", "-i", film, "-an", "-vf", f"fps=30,scale={LARGE}:{HAUT},format=gray", "-f", "rawvideo", "-"],
+                       capture_output=True)
+    n = LARGE * HAUT
+    im = [r.stdout[i:i + n] for i in range(0, len(r.stdout) - n + 1, n)]
+    compte, calme = [0] * (len(im) // 30), CALME
+    for k, (x, y) in enumerate(zip(im, im[1:])):
+        part = sum(abs(a - b) > SAUT for a, b in zip(x, y)) / n
+        if PEU <= part < BEAUCOUP and calme >= CALME and (k + 1) // 30 < len(compte):
+            compte[(k + 1) // 30] += 1
+        calme = calme + 1 if part < PEU else 0
+    return compte
+
+
+def rythme(film):
+    """Note de rythme de chaque seconde complète : 0,5 x mouvement (/ 0,6, plafonné) + 0,5 x arrivées (/ 2, plafonné)."""
+    return [0.5 * min(1, m / MOU) + 0.5 * min(1, a / 2) for m, a in zip(notes(film), arrivees(film))]
+
+
 def mouvement(film, carte=CARTE):
     with tempfile.TemporaryDirectory() as d:
         t = os.path.join(d, "gel.mp4")
         subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "lavfi", "-i", GEL, t], check=True)
-        temoin = [k for k, x in enumerate(notes(t)) if x < MOU]
+        temoin = [k for k, x in enumerate(rythme(t)) if x < RYTHME]
     if temoin != [1]:  # sans témoin qui échoue, la mesure ne prouverait rien
         return False, f"note de mouvement : le témoin (une seconde figée) n'est pas vu ({temoin}), la mesure ne prouve rien"
-    n = notes(film)
+    n = rythme(film)
     notees = n[:max(1, len(n) - int(carte))]  # sans les secondes de la carte de fin
-    faibles = [(k, x) for k, x in enumerate(notees) if x < MOU]
+    faibles = [(k, x) for k, x in enumerate(notees) if x < RYTHME]
     if not n:
-        return False, "note de mouvement : film de moins d'une seconde"
-    return not faibles, (f"note de mouvement : {len(notees)} secondes notées (carte de fin à part), toutes à {MOU} ou plus (la plus calme : {min(notees):.2f})" if not faibles else
-                         f"secondes faibles (sous {MOU}) : " + ", ".join(f"{k}-{k + 1} s ({x:.2f})" for k, x in faibles[:8]) +
+        return False, "note de rythme : film de moins d'une seconde"
+    return not faibles, (f"note de rythme (mouvement et arrivées) : {len(notees)} secondes notées (carte de fin à part), toutes à {RYTHME} ou plus (la plus calme : {min(notees):.2f})" if not faibles else
+                         f"secondes faibles (note de rythme sous {RYTHME}) : {len(faibles)} sur {len(notees)}, dont " + ", ".join(f"{k}-{k + 1} s ({x:.2f})" for k, x in faibles[:8]) +
                          " ; à reprendre, sauf une respiration, une chute ou la carte de fin écrite dans le storyboard")
 
 
@@ -128,6 +153,13 @@ def autotest():
         assert not mouvement(gel, carte=1)[0]  # la seconde figée n'est pas dans la carte de fin : toujours faible
         ff("-f", "lavfi", "-i", "testsrc2=d=3:s=320x240:r=30,split[a][b];[a][b]freezeframes=first=60:last=89:replace=59", os.path.join(d, "fin.mp4"))
         assert mouvement(os.path.join(d, "fin.mp4"), carte=1)[0]  # une carte de fin immobile ne compte pas
+        # le rythme : un fond immobile où deux étiquettes arrivent dans la seconde 1, rien dans la seconde 2
+        calme = os.path.join(d, "calme.mp4")
+        ff("-f", "lavfi", "-i", "color=c=0x0A0F16:s=320x240:d=3:r=30", "-vf",
+           "drawbox=x=40:y=40:w=40:h=12:color=white:t=fill:enable='gte(t,0.4)',drawbox=x=40:y=80:w=40:h=12:color=white:t=fill:enable='gte(t,1.2)',"
+           "drawbox=x=40:y=120:w=40:h=12:color=white:t=fill:enable='gte(t,1.6)'", "-pix_fmt", "yuv420p", calme)
+        assert arrivees(calme) == [1, 2, 0], arrivees(calme)
+        assert [k for k, x in enumerate(rythme(calme)) if x < RYTHME] == [0, 2], rythme(calme)  # une arrivée seule ne suffit pas
         assert "bandes vides" in zones(propre)[1], zones(propre)
         assert zones(deborde)[0] and "haut" in zones(deborde)[1], zones(deborde)  # une alerte, jamais un refus
         projet = os.path.join(d, "projet"); os.mkdir(projet)
@@ -138,7 +170,7 @@ def autotest():
         os.makedirs(os.path.join(projet, "capture")); open(os.path.join(projet, "capture", "site.html"), "w").write("un site \u2014 capturé")
         open(os.path.join(projet, "index.html"), "w").write("<p>Une phrase simple.</p>")
         assert tirets(projet)[0]  # une capture de site n'est pas un texte de la vidéo
-    print("autotest porte B : 14 contrôles passés")
+    print("autotest porte B : 16 contrôles passés")
 
 
 if __name__ == "__main__":

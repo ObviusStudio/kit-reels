@@ -1,6 +1,6 @@
 ---
 name: reel
-description: À charger pour faire un reel, un TikTok ou un short fini, d'un site, d'une appli, d'une idée ou de ta vidéo face caméra, jusqu'au MP4 vérifié. Script écrit pour être dit, voix ElevenLabs v3, vraies captures, scène 3D, son à -14 LUFS ; en 9:16, 4:5, 1:1 ou 16:9, à 30 ou 60 images par seconde. Douze styles, onze styles d'illustration (captures, collage à la Vox, isométrique, 3D…) proposés selon le contenu et ta charte, des images et vidéos libres de droit avec leur licence, un catalogue d'effets, seize contrôles et un relecteur à part avant de montrer le film.
+description: À charger pour faire un reel, un TikTok ou un short fini, d'un site, d'une appli, d'une idée ou de ta vidéo face caméra, jusqu'au MP4 vérifié. Script écrit pour être dit, voix ElevenLabs v3, vraies captures, scène 3D, son à -14 LUFS ; en 9:16, 4:5, 1:1 ou 16:9, à 30 ou 60 images par seconde. Douze styles, douze styles d'illustration (captures, collage à la Vox, isométrique, 3D…) proposés selon le contenu et ta charte, des images et vidéos libres de droit avec leur licence, un catalogue d'effets, seize contrôles et un relecteur à part avant de montrer le film.
 ---
 
 # reel
@@ -36,7 +36,7 @@ Chacune de ces quatre choses a été rendue et mesurée le 02/11/2026 avant d'ê
 
 ## Les images (0.4)
 
-- **Onze styles d'illustration** : vraies captures, interface flottante, 3D, formes à plat, données vivantes, collage à la Vox, isométrique, typographie en mouvement, banque teintée, dessin tracé, image générée étiquetée. Claude te recommande celui qui va à ce que la vidéo explique et à ta charte, avec deux autres choix, et peut te montrer l'image du hook dans les trois (`references/illustrations.md`).
+- **Douze styles d'illustration** : vraies captures, interface flottante, 3D, objet seul en studio, formes à plat, données vivantes, collage à la Vox, isométrique, typographie en mouvement, banque teintée, dessin tracé, image générée étiquetée. Claude te recommande celui qui va à ce que la vidéo explique et à ta charte, avec deux autres choix, et peut te montrer l'image du hook dans les trois (`references/illustrations.md`).
 - **Des images et des vidéos libres de droit** : `scripts/banque.py` cherche sur Pexels, Pixabay et Openverse, télécharge la bonne taille et note la licence de chaque fichier ; Unsplash se prend à la main et se note (`references/illustrations.md`, section 5).
 
 ## Les règles qui ne bougent pas
@@ -77,7 +77,7 @@ Chacune de ces quatre choses a été rendue et mesurée le 02/11/2026 avant d'ê
 | `references/verifier.md` | ce que mesure `verifier.py`, la planche d'images, ce qui reste à l'œil |
 | `references/styles.md` | les douze styles, le choix selon ce que la vidéo explique, comment juger un style |
 | `references/effets.md` | le catalogue d'effets : l'information que chacun montre, sa fabrication, son garde-fou |
-| `references/illustrations.md` | les onze styles d'illustration, la recommandation selon le contenu et la charte, la question à poser, les banques d'images et de vidéos libres de droit et leurs licences |
+| `references/illustrations.md` | les douze styles d'illustration, la recommandation selon le contenu et la charte, la question à poser, les banques d'images et de vidéos libres de droit et leurs licences |
 | `references/regles-de-scene.md` | les règles communes à toute vidéo : cadre, temps, couleur, mouvement, texte, son, preuve, waou |
 | `references/controles.md` | les seize contrôles du rendu, le relecteur à part et son prompt |
 | `references/sources.md` | d'où viennent les règles : études, sources datées, relevés de plus de 2 000 vidéos |

@@ -24,14 +24,14 @@ La prise face caméra de l'essai est fabriquée (`outils/prise-essai.py` : une s
 | **Douze styles** | le style se choisit selon ce que la vidéo explique ; chaque style a sa barre mesurable (`references/styles.md`) | des films et des reels de référence, étudiés image par image (`references/sources.md`) |
 | **Un catalogue d'effets** | chaque effet montre une information, avec sa fabrication et son garde-fou ; le storyboard les nomme par leur id (`references/effets.md`) | les mêmes relevés, et les règles communes de `references/regles-de-scene.md` |
 | **Seize contrôles et un relecteur à part** | avant de te montrer le film, `verifier.py` lance ceux qu'une commande tranche, puis un Claude neuf, qui ne l'a pas fabriqué, le relit (`references/controles.md`) | les contrôles de la méthode, chacun avec sa commande |
-| **Une note de mouvement** | chaque seconde du film est notée ; une seconde molle se reprend avant de te montrer le film (`scripts/porte_b.py`) | la seconde la plus calme de trois films de référence (relevé C10) |
+| **Une note de rythme** | chaque seconde du film est notée par un pondéré de son mouvement et des informations qui y arrivent ; une seconde molle se reprend avant de te montrer le film (`scripts/porte_b.py`) | la seconde la plus calme de trois films de référence (relevé C10), et un reel calme qui tient par l'arrivée des mots (relevé C12) |
 | **Des règles mesurées** | des études, des sources datées et des relevés (`references/sources.md`) | plus de 2 000 vidéos relevées et mesurées (relevés C9 et C11) |
 
 ## Nouveau dans la 0.4 : les images
 
 | | Ce que ça fait | D'où ça vient |
 |---|---|---|
-| **Onze styles d'illustration** | vraies captures, interface flottante, 3D, formes à plat, données vivantes, collage à la Vox, isométrique, typographie en mouvement, banque teintée, dessin tracé, image générée étiquetée ; chacun avec sa fabrication dans HyperFrames, ses effets et son garde-fou (`references/illustrations.md`) | les effets du catalogue et les règles de scène |
+| **Douze styles d'illustration** | vraies captures, interface flottante, 3D, objet seul en studio, formes à plat, données vivantes, collage à la Vox, isométrique, typographie en mouvement, banque teintée, dessin tracé, image générée étiquetée ; chacun avec sa fabrication dans HyperFrames, ses effets et son garde-fou (`references/illustrations.md`) | les effets du catalogue et les règles de scène |
 | **La question du style, avec une recommandation** | Claude lit ta charte, te recommande le style qui va à ce que la vidéo explique et à ta charte, te donne deux autres choix, et peut te montrer l'image du hook dans les trois | ce que la vidéo explique (`references/styles.md`, § 1) et ta charte |
 | **Images et vidéos libres de droit** | `scripts/banque.py` cherche sur Pexels, Pixabay et Openverse, télécharge la bonne taille et note la licence de chaque fichier ; `controler` refuse un fichier sans licence notée et donne les crédits à mettre dans la légende | licences relues le 03/11/2026 |
 
@@ -58,7 +58,7 @@ Mesuré avec Whisper large-v3 et ffmpeg ; les reels des deux tests et leurs mesu
 | Point de départ | un sujet | le format et l'objectif, puis la structure qui va avec |
 | Voix | rien : la voix de l'ordinateur, ou toi | ElevenLabs v3 scène par scène, débit mesuré, reprise si elle va trop vite, mots clés relus |
 | Musique et son | rien | une musique sous la voix qui se baisse quand on parle, un bruitage par information, master à -14 LUFS |
-| Images | des interfaces recréées | tes vraies captures, en perspective ou dans un vrai modèle de téléphone ; onze styles d'illustration proposés selon le sujet et ta charte ; des images et vidéos libres de droit, licence notée |
+| Images | des interfaces recréées | tes vraies captures, en perspective ou dans un vrai modèle de téléphone ; douze styles d'illustration proposés selon le sujet et ta charte ; des images et vidéos libres de droit, licence notée |
 | Style et effets | au hasard du prompt | douze styles et un catalogue d'effets, chacun lié à une information |
 | Vérification | à l'œil | un script mesure le MP4 : format, cadence, durée, volume, musique, images figées, débit, mots entendus, sous-titres calés sur la voix, image 0, note de mouvement de chaque seconde ; puis seize contrôles et un relecteur à part |
 | Fin | « Commente MOT », rien derrière | le message privé prêt, et le rappel de brancher la réponse automatique |

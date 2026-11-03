@@ -1,6 +1,6 @@
 # Les styles d'illustration : la nature des images, proposée selon le contenu et la charte
 
-Ce fichier sert à choisir comment on illustre un reel (vraies captures, collage d'archives à la Vox, isométrique, 3D, formes à plat, données…), à poser la question à la personne avec une recommandation tirée de ce que la vidéo explique et de sa charte, puis à trouver des images et des vidéos libres de droit avec leur licence notée.
+Ce fichier sert à choisir comment on illustre un reel (vraies captures, objet seul en studio, collage d'archives à la Vox, isométrique, 3D, formes à plat, données…), à poser la question à la personne avec une recommandation tirée de ce que la vidéo explique et de sa charte, puis à trouver des images et des vidéos libres de droit avec leur licence notée.
 
 Trois choix, trois fichiers : le style vidéo donne le rythme et la mise en page (`styles.md`) ; le style d'illustration donne la nature des images (ce fichier) ; la charte donne les couleurs, les polices et les interdits (`../modeles/charte.md`). En cas de conflit, `regles-de-scene.md` gagne.
 
@@ -16,7 +16,7 @@ Trois choix, trois fichiers : le style vidéo donne le rythme et la mise en page
 | 6 | **Aucun flou**, ni pour décorer ni pour cacher : on recadre ou on change d'image | un flou se lit comme un raté |
 | 7 | **Le statut commande l'usage**, comme pour les effets (`effets.md`, § 1) : un style `à l'essai` s'emploie et se signale à la validation | on sait ce qui a déjà tenu sur un vrai rendu |
 
-## 2. Les onze styles
+## 2. Les douze styles
 
 Le statut d'un style suit ses effets et ce qui a déjà été rendu : `éprouvé` quand son effet principal l'est dans `effets.md` ; sinon `à l'essai`.
 
@@ -25,6 +25,7 @@ Le statut d'un style suit ses effets et ce qui a déjà été rendu : `éprouvé
 | `capture-reelle` | la vraie page, le vrai écran, le vrai document, cadrés sur le détail qui compte | `npx --yes hyperframes@0.8.167 capture <url>`, cadre de téléphone, zoom sur le détail (`ecran.md`) | `ui-result`, `zoom-screen`, `spotlight-dim`, `marker-circle`, `split-source` | datée ; jamais refaite ni retouchée | éprouvé |
 | `ui-flottante` | l'interface découpée en cartes qui flottent à des profondeurs différentes, en perspective, avec une ombre portée nette | la vraie capture recadrée en cartes (`object-position`), posées en couches (`perspective`, `translateZ`), ombre décalée sans flou | `ui-floating`, `ui-floating-v2`, `ui-prompt`, `ui-tilt` | chaque carte est un morceau de la vraie capture, jamais une interface inventée | éprouvé |
 | `scene-3d` | des objets en volume, une lumière, une caméra qui tourne autour de ce qui change | `../modeles/scene-3d.html` (three.js 0.181.2), objets simples teintés par la charte, caméra par la timeline | `depth-object-pbr`, `camera-reframe`, `depth-photo` | la 3D montre un état qui change, jamais un décor ; 60 i/s si la caméra va vite | éprouvé |
+| `objet-studio` | un seul objet réel par nom concret, en lumière de studio, posé ou en lévitation avec son ombre de contact, sur une carte d'une teinte de la charte : le nom dit, montré par la chose | une photo de banque détourée (`scripts/banque.py`, puis `npx --yes hyperframes@0.8.167 remove-background`) ou un modèle 3D libre (Poly Haven, CC0) rendu dans `../modeles/scene-3d.html` ; ombre de contact en `radial-gradient` ; entrée par l'échelle (0,92 à 1), le fondu et l'ombre qui naît | `editorial-card`, `word-icon`, `depth-photo` | un objet réel, photographié ou modélisé, jamais généré par IA (sinon `scene-generee-etiquetee`, avec sa mention) ; un objet et un nom par carte ; aucun logo ni modèle du commerce identifiable ; jamais en flou | à l'essai |
 | `formes-flat` | des formes pleines et des icônes d'une seule famille qui entrent, se transforment et s'assemblent, à plat | SVG et CSS, formes aux couleurs de la charte, entrées élastiques (`back.out`), une icône qui devient la suivante | `split-illustration`, `checklist-sync`, `comparison-split`, `knockout-tiles` | une famille d'icônes (même trait) ; un objet focal par plan | éprouvé |
 | `donnees-vivantes` | le chiffre en grand, les barres qui poussent, la courbe qui se trace, la carte qui se colore, la source en pied | SVG : barres depuis zéro, courbe en `stroke-dashoffset`, chiffre qui compte ; fond de carte libre (Natural Earth, domaine public) | `stat-card`, `count-up`, `bar-grow`, `chart-line`, `data-stack` | échelle depuis zéro ; source et date à l'écran ; une donnée clé par plan | éprouvé |
 | `collage-vox` | le collage d'un explainer à la Vox : archives et photos détourées sur papier, trame d'imprimerie, mot surligné sur le vrai document, cercle et flèche tracés à la main, cadres qui glissent | photos de banque ou d'archives (section 5) détourées (`npx --yes hyperframes@0.8.167 remove-background`) ; papier en CSS (bruit SVG `feTurbulence` à faible opacité) ; trame en `radial-gradient` ; surligneur = bande `--accent` en `scaleX` de 0 à 1 sous le mot, en `mix-blend-mode: multiply` ; trait à la main en SVG `stroke-dashoffset` ; ombres dures | `paper-cut`, `marker-circle`, `split-source`, `headline-wall`, `pointer-callout` | une archive est vraie, datée et sourcée à l'écran, jamais générée ; le surligneur tombe sur le mot quand il est dit ; on ne détourne pas le sens d'une photo de personne réelle | à l'essai |
@@ -47,20 +48,21 @@ Le statut d'un style suit ses effets et ce qui a déjà été rendu : `éprouvé
 | une news, un décryptage, une histoire vraie | `collage-vox` | `capture-reelle` (la source), `banque-teintee` |
 | un système, une architecture, un flux | `iso-systeme` | `scene-3d`, `dessin-trace` |
 | un concept, une idée abstraite | `formes-flat` | `dessin-trace`, `scene-generee-etiquetee` |
-| un produit, un objet, une construction | `scene-3d` | `ui-flottante`, `banque-teintee` |
+| un produit, un objet, une construction | `scene-3d` | `objet-studio`, `ui-flottante` |
 | une annonce, un manifeste, une opinion | `typo-cinetique` | `scene-3d`, `collage-vox` |
 | une histoire, une émotion, une situation vécue | `banque-teintee` | `dessin-trace`, `scene-generee-etiquetee` |
 | une liste de conseils | `formes-flat` | `typo-cinetique`, `banque-teintee` |
+| un conseil ou un avis qui nomme des choses concrètes (des métiers, des objets, des lieux) | `objet-studio` | `formes-flat`, `banque-teintee` |
 
 **Étape 2, la charte.** Relève le fond, l'accent, la police et le ton (`charte.md`, ou la page d'accueil de la personne), puis remonte d'un rang chaque candidat que la charte appelle et descends d'un rang celui qu'elle écarte. Un fond est sombre quand sa luminance relative (celle du contraste WCAG) est sous 0,18.
 
 | La charte | Appelle | Écarte |
 |---|---|---|
 | fond sombre, accent vif, police géométrique (tech, logiciel, IA) | `scene-3d`, `iso-systeme`, `ui-flottante`, `donnees-vivantes` | `dessin-trace` en feutre sur blanc ; le `collage-vox` y passe en papier sombre |
-| fond clair, crème ou papier, police à empattements (média, éditorial, conseil) | `collage-vox`, `donnees-vivantes`, `typo-cinetique` | `scene-3d` brillante |
+| fond clair, crème ou papier, police à empattements (média, éditorial, conseil) | `collage-vox`, `objet-studio`, `donnees-vivantes`, `typo-cinetique` | `scene-3d` brillante |
 | couleurs franches, ton grand public ou ludique | `formes-flat`, `dessin-trace` | les archives sombres |
 | une personne ou un commerce, ton chaleureux (coach, artisan, restaurant) | `banque-teintee`, `capture-reelle`, `dessin-trace` | `iso-systeme` |
-| luxe, premium, une seule couleur | `scene-3d` (un objet seul), `banque-teintee` en duotone | `formes-flat` chargées |
+| luxe, premium, une seule couleur | `objet-studio`, `scene-3d` (un objet seul), `banque-teintee` en duotone | `formes-flat` chargées |
 
 **Étape 3, les interdits.** Retire tout style que la charte interdit (pas de photo de personne, pas d'image générée, pas d'emoji…) ou que la source ne peut pas nourrir (un `collage-vox` sans archive ni document vrai, une `capture-reelle` sans écran à capturer). Le premier qui reste est la recommandation ; les deux suivants sont les autres choix.
 
@@ -112,7 +114,7 @@ python3 scripts/banque.py controler medias/
 | Style | Ressource | Licence |
 |---|---|---|
 | `formes-flat`, `ui-flottante`, `dessin-trace` | icônes Lucide (https://lucide.dev) ou Phosphor (https://phosphoricons.com) : une seule famille par reel, au trait de la charte | ISC ; MIT |
-| `scene-3d` | Poly Haven (https://polyhaven.com) : éclairages HDRI, matières, modèles | CC0 |
+| `scene-3d`, `objet-studio` | Poly Haven (https://polyhaven.com) : éclairages HDRI, matières, modèles | CC0 |
 | `donnees-vivantes` | Natural Earth (https://www.naturalearthdata.com) : fonds de carte | domaine public |
 | `typo-cinetique` | la police de la charte ; à défaut, Google Fonts (https://fonts.google.com), avec la licence de la police (OFL le plus souvent) | selon la police |
-| `collage-vox`, `banque-teintee` | les banques de la section 5, par `scripts/banque.py` | selon la banque |
+| `collage-vox`, `banque-teintee`, `objet-studio` | les banques de la section 5, par `scripts/banque.py` | selon la banque |
