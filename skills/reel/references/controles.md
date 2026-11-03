@@ -13,17 +13,17 @@ Toutes les mesures se lancent sur le MP4 réel. Variable utilisée ci-dessous : 
 | 3 | Une image par temps de la beat map | chaque information annoncée est visible | extraction d'images et planche (bloc 2) |
 | 4 | Zones de sécurité | aucun texte hors de x 80-930, y 170-1500 | bandes recadrées (bloc 3) |
 | 5 | Contraste des textes | 4,5 à 1 ; 3 à 1 seulement pour un titre de 90 px au moins | `check` (passe de contraste), plus le calcul des paires du kit (bloc 8) |
-| 6 | Immobilité et mouvement | aucune image figée pendant 0,8 s ou plus (hors chute d'un gag) ; aucune seconde complète sous 0,6 de mouvement (écart moyen entre images successives, gris 96x96, 30 i/s, sur 255 ; sources C10), sauf une respiration, une chute ou la carte de fin écrites dans la beat map ; une seconde faible se reprend avant de montrer le film (mouvement plus large, scène plus courte) | `freezedetect` (bloc 3) et la note de chaque seconde de `scripts/porte_b.py`, lancée par `verifier.py` ; son témoin, une seconde figée, doit sortir faible |
+| 6 | Immobilité et mouvement | aucune image figée pendant 0,8 s ou plus (hors chute d'un gag) ; aucune seconde complète sous 0,6 de mouvement (écart moyen entre images successives, gris 96x96, 30 i/s, sur 255 ; sources C10), sauf une respiration, une chute ou la carte de fin écrites dans la beat map ; une seconde faible se reprend avant de montrer le film (mouvement plus large, scène plus courte) ; sur une prise face caméra (`verifier.py --face-camera`), la note se lit pour mémoire : son seuil vient de films de motion sans voix, et le cadrage alterné et le punch-in se regardent sur la planche | `freezedetect` (bloc 3) et la note de chaque seconde de `scripts/porte_b.py`, lancée par `verifier.py` ; son témoin, une seconde figée, doit sortir faible |
 | 7 | Déterminisme | aucun hasard sans graine, aucune horloge | `grep` (bloc 3) |
 | 8 | Sous-titres | à moins de 0,2 s de la voix, 0 mot d'écart avec le script verrouillé | transcription du son final avec horodatage des mots, comparée aux temps de la composition |
 | 9 | Son | mixage final à -14 LUFS, plus ou moins 1 ; crête vraie à -1 dBTP au plus | `ebur128` (bloc 4) |
 | 10 | Carte de fin | au moins 1,5 s à l'écran | `timeline --json` (bloc 5) |
 | 11 | Effets et colonne « Montre » | chaque effet nommé, chaque ligne a son information | porte A, relue sur le rendu |
-| 12 | Récompenses mesurées sur le rendu | première avant 3 s, écart de 5 s au plus, début du payoff à 60-80 % (valeur et enquête seulement ; news, publicité et cinématique : sans seuil, sources C9) | temps lus sur la planche, comparés à la colonne R de la beat map ; le payoff se date à la première image où le résultat promis est lisible, pas à sa dernière coche |
+| 12 | Récompenses mesurées sur le rendu | première avant 3 s, écart de 5 s au plus, début du payoff à 60-80 % (les cinq formats du kit sont des pièces de valeur ou d'enquête : le seuil vaut pour tous ; une news, une publicité ou un film cinématique n'en ont pas, sources C9) | temps lus sur la planche, comparés à la colonne R de la beat map ; le payoff se date à la première image où le résultat promis est lisible, pas à sa dernière coche |
 | 13 | Boucle (seulement si annoncée) | similarité entre première et dernière image de 0,95 au moins | `ssim` (bloc 6) |
 | 14 | Contrôles du moteur | `lint` et `check` sans erreur | `hyperframes.md` |
 | 15 | Typographie du texte | aucun tiret cadratin, demi-cadratin ni signe moins typographique | `grep` (bloc 7) |
-| 16 | Barre du waou | un effet qui montre l'information, une transition née d'un élément à l'écran, un seul payoff, début à 60-80 % (valeur et enquête seulement ; news, publicité et cinématique : sans seuil, sources C9) | relecteur séparé, section 2 |
+| 16 | Barre du waou | un effet qui montre l'information, une transition née d'un élément à l'écran, un seul payoff, début à 60-80 % (les cinq formats du kit sont des pièces de valeur ou d'enquête : le seuil vaut pour tous ; une news, une publicité ou un film cinématique n'en ont pas, sources C9) | relecteur séparé, section 2 |
 
 Bloc 1, format :
 

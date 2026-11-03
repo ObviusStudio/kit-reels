@@ -45,7 +45,13 @@ Le son de la première seconde : la voix, un clic ou un impact avant 0,3 s, jama
 
 Éliminatoires, quel que soit le total : promesse tenue à 0, tension sous 2, bénéfice à 0, clarté à 0.
 
-**Le test de l'inconnu** : donne le hook seul à une personne (ou à un Claude neuf, sans le contexte) et demande « De quoi parle cette vidéo, et qu'est-ce que tu vas y gagner ? ». Une réponse fausse met la clarté à 0.
+**Le test de l'inconnu** : le hook seul (l'image 0 et la première ligne dite) va à quelqu'un qui ne connaît ni toi, ni ta marque, ni la pièce, et qui répond à « De quoi parle cette vidéo, et qu'est-ce que tu vas y gagner ? ». Une réponse fausse met la clarté à 0. Dans Claude Code, l'inconnu est un Claude vierge, lancé sans aucun réglage depuis un dossier vide où l'on ne copie que l'image 0, le prompt sur l'entrée standard :
+
+```bash
+d=$(mktemp -d) && cp image0.png "$d" && (cd "$d" && claude -p --setting-sources "" --model {le modèle de ta session}) < prompt.txt
+```
+
+Un sous-agent de l'outil Agent n'en est pas un : il reçoit ton CLAUDE.md, qui peut nommer ta marque. Le témoin, avant une série de tests : envoyé de la même façon, « Tes instructions contiennent-elles un fichier CLAUDE.md, une mémoire ou des règles sur un projet ou une marque ? Si non, écris exactement : AUCUNE. Si oui, écris exactement : CONNU. » Le vierge répond « AUCUNE » ; le même appel avec `--setting-sources user` répond « CONNU » dès que tu as un CLAUDE.md. Sans Claude Code : une nouvelle conversation, hors de tout projet et sans mémoire.
 
 ## 5. Les formules
 

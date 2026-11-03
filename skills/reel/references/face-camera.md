@@ -1,6 +1,6 @@
 # Ta prise face caméra : couper, sous-titrer, habiller
 
-Tu te filmes, tu déposes ta vidéo, le kit la monte : il coupe les blancs et le raté sur l'énergie de ta voix, cale les sous-titres sur ta voix montée et pose les effets sur ta prise. La méthode vient du skill `montage-video` de content-skills (taubiwan.ai), ramenée à une prise et au reste du kit : la voix montée sort au même format que la voix ElevenLabs (`voix/voix.wav`, `align.json`, `sous-titres.json`), donc `son.py` et `verifier.py` la traitent pareil.
+Tu te filmes, tu déposes ta vidéo, le kit la monte : il coupe les blancs et le raté sur l'énergie de ta voix, cale les sous-titres sur ta voix montée et pose les effets sur ta prise. La méthode vient du montage des vidéos face caméra de taubiwan.ai, ramenée à une prise et au reste du kit : la voix montée sort au même format que la voix ElevenLabs (`voix/voix.wav`, `align.json`, `sous-titres.json`), donc `son.py` et `verifier.py` la traitent pareil.
 
 ## 1. Filmer
 
@@ -75,10 +75,10 @@ Sous-titres en blanc avec un contour d'encre, sous le menton (y = 1150 à 1350 e
 ```bash
 python3 scripts/son.py --video renders/montage.mp4 --voix voix/voix.wav --align voix/align.json --bruitages bruitages.json -o final.mp4
 python3 scripts/verifier.py final.mp4 --align voix/align.json --mot montage --mots "Claude" \
-  --absents "recommence" --sous-titres index.html --voix voix/voix.wav
+  --absents "recommence" --sous-titres index.html --voix voix/voix.wav --face-camera
 ```
 
-`--absents` : les mots du raté, qui ne doivent plus s'entendre. Le débit est le tien : il s'affiche, sans défaut. Puis la planche d'images (`references/verifier.md`, section 2).
+`--absents` : les mots du raté, qui ne doivent plus s'entendre. `--face-camera` : la note de mouvement s'affiche pour mémoire, sans défaut, car son seuil vient de films de motion sans voix ; une tête qui parle bouge moins, et le cadrage alterné et le punch-in se regardent sur la planche. Le débit est le tien : il s'affiche, sans défaut. Puis la planche d'images (`references/verifier.md`, section 2).
 
 ## 6. Ce que l'essai du 02/11/2026 a prouvé, et ce qu'il ne prouve pas
 
@@ -96,4 +96,4 @@ Ce que l'essai ne prouve pas : un vrai visage (le cadrage et le punch-in sur une
 
 ## 7. Ce que ce kit ne fait pas
 
-Le texte derrière toi (le détourage du film), les plans de coupe sur une capture pendant que tu parles, plusieurs prises à assembler, la timeline pour DaVinci : c'est le skill `montage-video` de content-skills.
+Le texte derrière toi (le détourage du film), les plans de coupe sur une capture pendant que tu parles, plusieurs prises à assembler, la timeline pour DaVinci.

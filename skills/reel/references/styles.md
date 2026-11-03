@@ -26,13 +26,13 @@ Pour tous : carte de fin `end-card`, hook à l'image 0 et texte à 0,3 s au plus
 
 ### manifesto-page : des mots géants, puis la vraie page qui se redresse
 - Référence : https://x.com/cleeeeeeeeement/status/2099798349226377546
-- Beau : un mot géant puis la phrase 5 fois plus petite, chaque mot passe du flou au net, le logo devient l'en-tête de la vraie page.
+- Beau : un mot géant puis la phrase 5 fois plus petite, chaque mot prend son poids, du maigre au gras, le logo devient l'en-tête de la vraie page.
 - Rythme, typo : 5 plans de 1,1 s et un plan de 7 s pour la page ; mot de 250 px d'encre sur 80 à 100 % de la colonne.
 - Mouvement, transitions : mise au point en 0,2 s ; la page se redresse en 1,6 s.
 - Son : musique sans voix, un son par information.
 - Effets : `type-wall`, `ui-tilt`, `zoom-screen`, `proof-capture`.
 - Jamais : une image 0 noire ; une page inventée ; une offre dans un manifeste.
-- Prompt : manifesto kinetic typography, one giant word then the sentence at one fifth the size, blur-to-sharp words, real page tilts then straightens
+- Prompt : manifesto kinetic typography, one giant word then the sentence at one fifth the size, words gaining weight from light to bold, real page tilts then straightens
 - Barre : l'OCR lit un mot à l'image 0 ; accent sous 12 % ; titre de la page redressée de 90 px ; aucune suite presque immobile de plus de 0,8 s.
 
 ### beat-word-showreel : un mot par temps, une matière par scène
@@ -125,13 +125,13 @@ Pour tous : carte de fin `end-card`, hook à l'image 0 et texte à 0,3 s au plus
 
 ### desk-screen-explainer : un plan fixe, un écran réel devant, un repère qui avance
 - Référence : https://www.instagram.com/reel/DdAFS1PRxQO/
-- Beau : la preuve avant la méthode, trois plans de profondeur (écran net, visage, décor flou), un repère de progression constant.
+- Beau : la preuve avant la méthode, trois plans de profondeur (écran net, visage, décor assombri), un repère de progression constant.
 - Rythme, typo : un plan fixe poitrine, l'écran change toutes les 1,5 à 3 s au mot, un seul punch-in ; titre de 90 px sorti à 2 s.
 - Mouvement, transitions : la caméra ne bouge pas, l'écran porte le mouvement ; une seule coupe franche.
 - Son : voix compressée, fond musical bas, premier mot à 0,08 s.
 - Effets : `ui-world`, `pip-presenter`, `checklist-sync`, `hud-data`, `chapter-pill`, `screen-speedup`.
 - Jamais : un anneau de compte à rebours ; un écran fixe plus de 3 s sans nouvelle information.
-- Prompt : static chest-up framing at a desk, real screen sharp in front, blurred room behind, screen changes on the spoken word, step counter
+- Prompt : static chest-up framing at a desk, real screen sharp in front, dim room behind, out of the light, screen changes on the spoken word, step counter
 - Barre : écran de 25 à 35 % de la hauteur ; chaque slide affiche « n/total » en 48 px ; le repère avance toutes les 5 s au plus.
 
 ### product-world : un univers produit à plusieurs profondeurs, un panneau net
@@ -141,7 +141,7 @@ Pour tous : carte de fin `end-card`, hook à l'image 0 et texte à 0,3 s au plus
 - Mouvement, transitions : la caméra glisse entre les plans, le panneau reste net, bézier (0.16, 1, 0.3, 1) ; avant et après superposés à 70 % (`fade-70`).
 - Son : 110 à 140 BPM, un clic par micro-récompense, carte de fin silencieuse.
 - Effets : `ui-floating`, `depth-photo`, `depth-object-pbr`, `camera-reframe`, `fade-70`.
-- Jamais : flou, halo, lueur si le kit les interdit (on assombrit les plans lointains) ; microtexte en coin.
+- Jamais : flou (`regles-de-scene.md`, § 13) ; halo, lueur si le kit les interdit (on assombrit les plans lointains) ; microtexte en coin.
 - Prompt : layered product world, one sharp central panel, near and far planes darkened not blurred, slow camera glide between planes
 - Barre : le panneau central est la seule surface au contraste plein ; trois plans de profondeur au moins.
 

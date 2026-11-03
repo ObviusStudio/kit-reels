@@ -3,7 +3,7 @@
 Usage :
   python3 verifier.py final.mp4 [--format 9:16] [--ips 30] [--align voix/align.json] [--mot équipe]
                       [--mots "Pilot,1500,L'IA"] [--absents "recommence"] [--sous-titres index.html --voix voix/voix.wav]
-                      [--projet .] [--carte 2]
+                      [--projet .] [--carte 2] [--face-camera]
   python3 verifier.py --autotest
 
 --format : 9:16 (par défaut, 1080 x 1920), 4:5 (1080 x 1350), 1:1 (1080 x 1080) ou 16:9 (1920 x 1080).
@@ -15,7 +15,8 @@ plus du mot entendu ; --voix, la voix seule (voix/voix.wav), pour lire le retour
 modèle Parakeet si installé, voir references/verifier.md). Puis les contrôles de porte_b.py (references/controles.md) :
 l'image 0, une alerte sur les bandes hors de la zone du texte, la note de mouvement de chaque seconde (--carte : les secondes de
 la carte de fin, non notées, 2 par défaut) et, avec --projet (le dossier du projet HyperFrames), le déterminisme et les tirets
-longs de la composition. Chaque ligne dit OK ou À REVOIR ; la dernière dit VERIF_OK, ou VERIF_A_REVOIR et le nombre de défauts.
+longs de la composition. --face-camera : le film d'une prise face caméra ; la note de mouvement s'y dit pour mémoire,
+son seuil venant de films de motion sans voix (references/sources.md, C10). Chaque ligne dit OK ou À REVOIR ; la dernière dit VERIF_OK, ou VERIF_A_REVOIR et le nombre de défauts.
 """
 import difflib, importlib.util, json, math, os, re, subprocess, sys, tempfile, unicodedata
 
@@ -139,8 +140,14 @@ def calage(groupes, entendus, parole=()):
     return (len(vus) / len(aff) if aff else 0.0), (max(ecarts) if ecarts else None)
 
 
+def lignes_porte_b(resultats, face_camera=False):
+    """Les contrôles de porte_b.py, dans leur ordre ; sur une prise face caméra, la note de mouvement (la troisième) passe en
+    INFO : son seuil vient de films de motion sans voix (C10), une tête qui parle bouge moins."""
+    return [("INFO" if face_camera and k == 2 else ok, texte) for k, (ok, texte) in enumerate(resultats)]
+
+
 def verifier(film, align=None, mot=None, mots=(), format_="9:16", ips=None, absents=(), sous_titres=None, voix_seule=None,
-             projet=None, carte=porte_b.CARTE):
+             projet=None, carte=porte_b.CARTE, face_camera=False):
     defauts = []
     def ligne(ok, texte):
         print(("OK        " if ok else "À REVOIR  ") + texte)
@@ -196,8 +203,11 @@ def verifier(film, align=None, mot=None, mots=(), format_="9:16", ips=None, abse
                 ligne(ok, f"sous-titres : {len(groupes)} groupes, {part:.0%} des mots entendus, écart max {nb(ecart)} s "
                       f"(au plus {ECART_SOUS_TITRE} s, mesuré {'sur la voix seule' if voix_seule else 'sur la transcription'} ; "
                       f"témoins à -0,3 et +0,3 s : {nb(temoins[0])} et {nb(temoins[1])} s{'' if vu else ', pas vus'})")
-    for ok, texte in porte_b.controles(film, format_, projet, carte):
-        ligne(ok, texte)
+    for ok, texte in lignes_porte_b(porte_b.controles(film, format_, projet, carte), face_camera):
+        if ok == "INFO":
+            print("INFO      " + texte + " (prise face caméra : pour mémoire)")
+        else:
+            ligne(ok, texte)
     print("VERIF_OK" if not defauts else f"VERIF_A_REVOIR {len(defauts)}")
     return not defauts
 
@@ -235,7 +245,10 @@ def autotest():
     assert lire_silences("silence_start: 3.5\n... silence_end: 4.1 | silence_duration: 0.6\n") == [(3.5, 0.6)]
     assert lire_figees("lavfi.freezedetect.freeze_start: 10.2\nlavfi.freezedetect.freeze_duration: 1.4\n") == [(10.2, 1.4)]
     assert debits({"scenes": [{"id": "s1", "start": 0, "end": 3, "mots": [0] * 12}]}) == [("s1", 240)]
-    print("autotest vérification : 19 contrôles passés")
+    r = [(True, "image 0"), (True, "zones"), (False, "secondes faibles : 1-2 s")]
+    assert [x[0] for x in lignes_porte_b(r)] == [True, True, False]                 # un film de motion : la seconde molle compte
+    assert [x[0] for x in lignes_porte_b(r, face_camera=True)] == [True, True, "INFO"]  # une prise face caméra : pour mémoire
+    print("autotest vérification : 21 contrôles passés")
     porte_b.autotest()
 
 
@@ -253,5 +266,5 @@ if __name__ == "__main__":
         sys.exit("--format : " + ", ".join(FORMATS))
     ok = verifier(a[0], opt("--align"), opt("--mot"), liste("--mots"), opt("--format") or "9:16",
                   float(opt("--ips")) if opt("--ips") else None, liste("--absents"), opt("--sous-titres"), opt("--voix"),
-                  opt("--projet"), float(opt("--carte")) if opt("--carte") else porte_b.CARTE)
+                  opt("--projet"), float(opt("--carte")) if opt("--carte") else porte_b.CARTE, "--face-camera" in a)
     sys.exit(0 if ok else 1)

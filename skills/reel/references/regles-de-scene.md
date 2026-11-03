@@ -8,7 +8,7 @@ Les règles qui valent pour tout reel et tout montage, quel que soit le kit, qui
 
 | Règle | Valeur |
 |---|---|
-| Format | 1080x1920, H.264, 30 i/s, 3 à 90 s, 300 Mo au plus (Reels Instagram, plateforme) (sources W16) ; 60 i/s seulement pour un master de motion publié à la main |
+| Format | 1080x1920, H.264, 30 i/s, 3 à 90 s, 300 Mo au plus (Reels Instagram, plateforme) (sources W16) ; 60 i/s pour le rendu premium (un mouvement rapide, une caméra 3D), à 20 Mbit/s (`hyperframes.md`, section 6) |
 | Composition | pile verticale : une idée par écran, typo grande, centre de gravité au tiers haut du milieu ; le hook y tient, y=300 à 900 |
 | Recadrage d'un 16:9 | interdit : on recompose la scène |
 | Zones de sécurité | 150 px en haut, 150 px à droite (boutons), 420 px en bas : tout texte entre y=170 et y=1500, et entre x=80 et x=930 (en comparaison, Meta demande pour une publicité Reels qui porte une mention légale de laisser libre le bas de 40 %) (sources W31) |
@@ -86,6 +86,7 @@ Une vidéo faite par une IA se trahit par les mêmes tics (sources W42, W33), ch
 - Texte animé qui ne désigne rien ; plus de 8 mots ou de 3 lignes à l'écran à la fois (décompte au § 5).
 - Tics de cadre : étiquettes de coin, faux timecodes, « SYSTEM ONLINE », cadres de visée sans raison (sources W33).
 - Une seule vitesse de mouvement du début à la fin, zoom sans motif.
+- Sous-titres qui sautent mot par mot, un zoom à chaque phrase.
 - Une fonction décrite par une phrase au lieu d'être montrée en action.
 - Première image vide, fin abrupte sans carte ni boucle.
 
@@ -145,7 +146,7 @@ Les effets de chaque information : `effets.md`.
 
 ## 13. Les exigences de rendu
 
-Ces sept exigences visent le rendu, pas le mécanisme, et valent pour toute pièce ; un kit peut les durcir (pas d'emoji dans un appel à l'action, par exemple). Contrôle : sur l'image extraite.
+Ces neuf exigences visent le rendu, pas le mécanisme, et valent pour toute pièce ; un kit peut les durcir (pas d'emoji dans un appel à l'action, par exemple). Contrôle : sur l'image extraite.
 
 | Exigence | Règle |
 |---|---|
@@ -156,6 +157,8 @@ Ces sept exigences visent le rendu, pas le mécanisme, et valent pour toute piè
 | La source à l'écran seulement pour les news | la source posée à côté du commentaire (`split-source`) n'est employée que dans une pièce d'actualité ; ailleurs, la source se lit en microtexte (§ 7) |
 | Des illustrations riches | des icônes, des graphiques animés et, si le kit le permet, des emojis ; jamais une scène réduite à un aplat et un titre |
 | Jamais un contour fin pour désigner | désigner par un projecteur qui assombrit le reste, un zoom ou une étiquette ; jamais un cadre fin ni des coins |
+| Aucun flou posé par nous | ce qui ne doit pas se voir se remplace (une donnée de démonstration, un aplat plein, la surface voisine) ou sort du cadre, jamais flouté ; le mot qui compte se désigne par son poids, son échelle ou un projecteur qui assombrit le reste, jamais par un flou qui se résout ; aucun verre dépoli dans nos calques ; une vraie capture d'interface garde son rendu d'origine |
+| Jamais une boîte plate sur l'image | sur une prise de vue ou un plan généré, un texte ou une interface se pose dans la scène (derrière la personne détourée, sur l'écran en perspective, avec son ombre), jamais une boîte sombre plate ni un carton noir à la place d'une image ; chaque information arrive sur une image du film, la carte de fin mise à part |
 
 ## 14. Le waou : une barre écrite, regardée par un autre
 

@@ -24,13 +24,13 @@ python3 scripts/verifier.py final.mp4 --align voix/align.json --mot équipe --mo
 | sous-titres | `--sous-titres` (la composition, ou `voix/sous-titres.json`) : 90 % des mots retrouvés dans la voix, chaque groupe à 0,2 s au plus du mot dit ; après un blanc, l'écart se lit sur l'énergie de la voix seule (`--voix`), au retour de la voix ; deux témoins, les mêmes sous-titres avancés et retardés de 0,3 s, doivent être refusés |
 | image 0 | pas noire : la première image porte déjà le hook |
 | zones | une alerte, jamais un refus : du contenu dans les bandes hors de la zone du texte de `--format` (`ecran.md`, section 1) ; à relire sur la planche, car seul le texte doit rester dans sa zone |
-| mouvement | chaque seconde complète notée (écart moyen entre images successives, gris 96 x 96, 30 images par seconde, sur 255) ; une seconde sous 0,6 est molle et se reprend, sauf une respiration, une chute ou la carte de fin écrite dans le storyboard ; les secondes de `--carte` (2 par défaut) ne sont pas notées ; son témoin, une seconde figée, doit sortir molle |
+| mouvement | chaque seconde complète notée (écart moyen entre images successives, gris 96 x 96, 30 images par seconde, sur 255) ; une seconde sous 0,6 est molle et se reprend, sauf une respiration, une chute ou la carte de fin écrite dans le storyboard ; les secondes de `--carte` (2 par défaut) ne sont pas notées ; son témoin, une seconde figée, doit sortir molle ; avec `--face-camera`, la note s'affiche pour mémoire (`INFO`) : son seuil vient de trois films de motion sans voix (`sources.md`, C10) |
 | déterminisme | avec `--projet` : aucun `Math.random`, `Date.now` ni `performance.now` dans `index.html` et `compositions/` |
 | tirets | avec `--projet` : aucun tiret cadratin, demi-cadratin ni signe moins typographique dans les textes de la composition |
 
 Ces cinq lignes viennent de `scripts/porte_b.py`. Les seize contrôles de la méthode, ceux qu'une commande ne tranche pas et le relecteur à part sont dans `controles.md`.
 
-Pour une prise face caméra, le débit est celui de la personne : il s'affiche pour mémoire (`INFO`), sans défaut.
+Pour une prise face caméra, le débit est celui de la personne : il s'affiche pour mémoire (`INFO`), sans défaut ; avec `--face-camera`, la note de mouvement aussi.
 
 Pourquoi l'énergie après un blanc : sur le reel d'essai, après une pause, la transcription datait « ton » à 6,64 s et l'alignement d'ElevenLabs à 6,86 s, quand la voix revient à 6,96 s. Aucune date de mot n'est crue après un blanc.
 
