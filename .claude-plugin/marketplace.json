@@ -1,0 +1,17 @@
+{
+  "name": "kit-reels",
+  "owner": {
+    "name": "Guillaume Taub",
+    "url": "https://github.com/Taubiwan"
+  },
+  "metadata": {
+    "description": "Le kit reels de taubiwan.ai : des reels finis, avec une voix qui sonne humaine."
+  },
+  "plugins": [
+    {
+      "name": "kit-reels",
+      "source": "./",
+      "description": "Un reel fini et vérifié : structure par format et objectif, voix ElevenLabs v3 ou ta prise face caméra montée, vraies captures ou scène 3D, musique, contrôle du fichier ; 9:16, 4:5, 1:1, 16:9, 30 ou 60 i/s."
+    }
+  ]
+}

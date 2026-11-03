@@ -1,0 +1,68 @@
+# Les sources de la méthode
+
+Ce fichier dit d'où viennent les études, les chiffres et les relevés que citent les fiches du kit (`styles.md`, `effets.md`, `regles-de-scene.md`, `controles.md`), et avec quelle confiance. Une source s'appelle par son identifiant : E pour une étude publiée, P pour une page de plateforme, W pour une source web datée, X pour un film étudié image par image, C pour un relevé fait par nous. Un relevé est une photo : il dit ce qui s'est passé sur un échantillon, pas ce qui arrivera.
+
+| Nature | Sens |
+|---|---|
+| mesuré | chiffre relevé par nous ou par une étude, avec sa date et son échantillon |
+| plateforme | documentation ou page d'aide de la plateforme ou de l'éditeur : fait foi sur ce qu'elle mesure, pas sur ce qui marche |
+| web mesuré | étude chiffrée d'un tiers : utile si l'échantillon et la date sont connus |
+| web opinion | praticien, agence ou vendeur : une piste, jamais une preuve |
+
+Les règles de ce kit s'appuient sur plus de 2 000 vidéos relevées et mesurées : 2 885 au seul relevé C11 (du 23/10 au 02/11/2026), plus les 1 039 du relevé C9 (17 et 18/10/2026), dont 63 décortiquées image par image ; une même vidéo peut figurer dans les deux relevés.
+
+## Les études
+
+| Id | Étude | Revue | DOI | Nature |
+|---|---|---|---|---|
+| E12 | Schneider, Beege, Nebel, Rey, 2018, « A meta-analysis of how signaling affects learning with media » | Educational Research Review 23, 1-24 | https://doi.org/10.1016/j.edurev.2017.11.001 | méta-analyse de 103 travaux |
+| E13 | Tversky, Morrison, Betrancourt, 2002, « Animation: can it facilitate? » | International Journal of Human-Computer Studies 57(4), 247-262 | https://doi.org/10.1006/ijhc.2002.1017 | revue |
+| E14 | Schultz, Dayan, Montague, 1997, « A Neural Substrate of Prediction and Reward » | Science 275(5306), 1593-1599 | https://doi.org/10.1126/science.275.5306.1593 | revue avec données sur primate |
+| E15 | Tik, Sladky, Luft, Willinger et al., 2018, « Ultra-high-field fMRI insights on insight: Neural correlates of the Aha!-moment » | Human Brain Mapping 39(8), 3241-3252 | https://doi.org/10.1002/hbm.24073 | mesuré (imagerie cérébrale) |
+| E16 | Oh, Chesebrough, Erickson, Zhang et al., 2020, « An insight-related neural reward signal » | NeuroImage 214, 116757 | https://doi.org/10.1016/j.neuroimage.2020.116757 | mesuré (imagerie cérébrale) |
+| E17 | Harp et Mayer, 1998, « How seductive details do their damage: A theory of cognitive interest in science learning » | Journal of Educational Psychology 90(3), 414-434 | https://doi.org/10.1037/0022-0663.90.3.414 | mesuré (expériences) |
+| E18 | Rey, 2012, « A review of research and a meta-analysis of the seductive detail effect » | Educational Research Review 7(3), 216-237 | https://doi.org/10.1016/j.edurev.2012.05.003 | méta-analyse |
+
+## Les sources web datées
+
+| Id | Source | Lien | Date | Nature | Ce qu'on en garde |
+|---|---|---|---|---|---|
+| W14 | sonetho.com, mixage | https://sonetho.com/en/post/75 | 08/10/2026 | web opinion | niveaux de mixage |
+| W16 | Zernio, Instagram | https://docs.zernio.com/platforms/instagram | relue le 11/10/2026 | plateforme (outil) | spécification des Reels, `isAiGenerated` |
+| W22 | Postdom, ce qui rend une vidéo virale | https://postdom.com/research/what-makes-a-video-go-viral | 05/10/2026 | web mesuré (1 272 vidéos, indicatif) | hook, premier cadre, fin, rythme de coupes |
+| W23 | System1, pubs de créateurs sur TikTok | https://system1group.com/blog/building-your-brand-with-paid-creator-ads | 29/06/2026 | web mesuré (620 publicités de créateurs et 597 publicités de marques) | repère de marque dans les 2 premières secondes |
+| W24 | WPP Media et TikTok, communiqué | https://www.wppmedia.com/news/System1-WPPMedia-TikTok-launch-creator-effectiveness-playbook | 07/07/2026 | web mesuré (même étude que W23, sans son chiffre de 61 % de repères de marque) | la même chose que W23 |
+| W26 | WritePanda, 7 lois de la rétention | https://www.writepanda.ai/blog/retention-editing-7-laws/ | 04/07/2026 | web mesuré par un vendeur d'outil (13 shorts et 9 longs formats YouTube, 7 chaînes) | boucle ouverte résolue entre 55 et 85 % de la durée sur les 13 shorts (72 % et plus sur les longs formats) |
+| W27 | Congrès Marketing Trends, étude Dost et Huang | https://archives.marketing-trends-congress.com/2026/pages/PDF/paper_professor_DOST_HUANG.pdf | 11/02/2026 | web mesuré (expérience, N=242) | rythme de coupes modéré |
+| W28 | getreelyze.com, rythme et coupes | https://getreelyze.com/guides/reel-pacing-and-cuts | 01/06/2026 | web opinion | changement visible toutes les 1,5 à 3 s |
+| W29 | Sentarys, sous-titres animés | https://sentarys.com/blog/animated-captions-shorts | 26/09/2026 | web opinion | taille et bande de sous-titres |
+| W31 | Meta, texte et zone de sécurité des pubs | https://www.facebook.com/business/help/980593475366490 | consultée le 11/10/2026, relue le 17/10/2026 | plateforme | bords libres de tout texte pour une publicité 9:16 ; les 40 % du bas laissés libres quand la publicité Reels porte une mention légale |
+| W33 | opus5video.com, vidéos avec Claude | https://opus5video.com/how-to-make-videos-with-claude/ | 30/09/2026 | web opinion | overlays, signes de slop |
+| W34 | everythingproducteducation.com (article Box) | https://everythingproducteducation.com/create-motion-graphic-videos-with-claude/ | 08/10/2026 | web opinion (relaie W95 pour le 1/3 s) | 1/3 s par mot, chaîne en 4 étapes |
+| W42 | Digicurator, signes de slop | https://blog.digicuratoragency.com/ai-motion-graphics-skills-remotion-claude-code/ | 24/08/2026 | web opinion | symptômes de slop |
+| W46 | Instagram, tendances audio | https://www.facebook.com/help/instagram/637936641677566/?locale=en_GB | consultée le 11/10/2026 | plateforme | audio tendance dans l'application |
+| W47 | Meta, bibliothèque musicale | https://www.facebook.com/business/help/402084904469945 | consultée le 11/10/2026 | plateforme | licence d'usage, Meta Sound Collection |
+| W48 | TikTok, Commercial Music Library | https://ads.tiktok.com/resources/help/article/commercial-music-library?lang=en | 07/2025 (ancienne) | plateforme | musique commerciale |
+| W49 | NBK Social, sons tendance pour les marques | https://www.nbksocial.com/journal/can-brands-use-trending-audio-on-instagram/ | 24/02/2026, mise à jour le 06/10/2026 | web opinion | droits d'un son tendance |
+| W82 | Reddit r/ClaudeCode, explainer de 30 s (Remotion 4.0.531, 1920x1080, 30 i/s) | https://www.reddit.com/r/ClaudeCode/comments/1wuj0hn/i_made_a_30second_pig_latin_explainer_in_claude/ | 30/09/2026, 22:38 UTC | web opinion (retour d'expérience unique, 2 points et 2 commentaires le 11/10/2026) | un fichier de temps unique alimente l'image, les tests de durée minimale et les repères sonores ; seuils cités : mot terminé 40 images, carte d'étape 24, saut 22 |
+| W95 | BBC, Subtitle Guidelines, section 4 « Timing » | https://www.bbc.co.uk/accessibility/forproducts/guides/subtitles/ | non datée, lue le 17/10/2026 (l'ancienne adresse bbc.github.io/subtitle-guidelines y renvoie) | plateforme (norme d'un diffuseur) | vitesse de sous-titre recommandée de 160 à 180 mots par minute, soit 0,33 à 0,375 s par mot ; durée minimale d'affichage d'environ 0,3 s par mot |
+
+## Les films X étudiés image par image
+
+| Id | Compte | Adresse du post | Date | Audience à la première lecture | Durée, format | Ce qu'on en garde |
+|---|---|---|---|---|---|---|
+| X1 | @cleeeeeeeeement (7 746 abonnés, FR) | https://x.com/cleeeeeeeeement/status/2099798349226377546 | 15/09/2026 | 66 947 vues, 149 j'aime, 263 enregistrements | 12 s, 960x540, 30 i/s, musique | lancement d'une communauté façon produit Apple ou Linear : la mise au point de la typo (flou vers net), la frappe dans un champ puis un clic qui déclenche la scène suivante, l'alternance sombre puis clair, l'interface filmée comme un objet 3D ; trois coupes franches seulement ; prompt non publié |
+| X2 | @leonabboud (27 501 abonnés) | https://x.com/leonabboud/status/2103576084499358051 ; prompt en réponse : https://x.com/leonabboud/status/2103578764018139349 | 25/09/2026 | 132 404 vues, 847 j'aime, 954 enregistrements | 15 s, 1920x1080, 60 i/s, musique | showreel de motion designer, 7 scènes en 15 s ; prompt d'une phrase (détail sous le tableau) |
+| X3 | @samuel_yostt (1 512 abonnés) | https://x.com/samuel_yostt/status/2105746669035733275 | 01/10/2026 | 42 933 vues, 604 j'aime, 632 enregistrements | 15 s, 1920x1080, 60 i/s, musique | promo SaaS lumineuse, un seul accent orange : une phrase courte par scène, texte à gauche et preuve visuelle à droite, mot permutable du hook (trois cibles en 2 s), preuve par la donnée, carte de fin avec bouton et adresse ; aucune coupe franche mesurée ; prompt non publié |
+| X4 | @ultimaxbt (221 abonnés) | https://x.com/ultimaxbt/status/2108935657334702300 (republication ; le post d'origine, 2106761276454064147, a été supprimé par l'auteur) | 10/10/2026 | 24 104 vues, 366 j'aime, 451 enregistrements | 14,7 s, 1922x1080, 60 i/s, musique | « 0 keyframes » : un système de mouvement entier tiré d'un point orange (détail sous le tableau) |
+
+## Les relevés
+
+| Id | Relevé | Date | Échantillon et méthode | Ce qu'il montre |
+|---|---|---|---|---|
+| C1 | Les 4 films X, relevé image par image | 11/10/2026 | 4 films (X1 à X4), 12 à 15 s ; planches contact à 3 images par seconde, détection de coupes ffmpeg (seuil de scène 0,25), mesure du niveau audio | un changement visuel toutes les 1,5 à 2,5 s (6 à 8 temps en 15 s), les 4 films ; typo cinétique à un mot toutes les 0,42 à 0,47 s (128 à 144 BPM), 2 films sur 4 (X2 et X4) ; coupes franches : 3 (X1), 4 dans la partie typo (X2), 0 (X3) et 5 (X4), le reste enchaîne par morphs ; une seule bascule sombre vers clair, à 72,5 % de la durée, dans 1 film ; un fil conducteur dans 3 films ; un seul accent couleur sur des neutres dans les 4 ; musique dans les 4, niveau moyen de -14 à -23 dB ; 16:9 pensé pour X |
+| C8 | Note de travail privée d'un praticien (catalogue d'approvisionnement visuel) | mise à jour le 10/09/2026 | une note sans source primaire citée ; l'audit du 17/10/2026 n'a retrouvé aucune source primaire pour ses quatre chiffres | Quatre hypothèses, non mesurées ici : le spectateur décide en 1,3 s environ ; un hook visuel retient 2,4 fois mieux à 3 s qu'un hook texte seul ; un même dispositif de hook s'use en 3 à 4 semaines (la note écrit 3,5) ; 70 à 85 % des vues se font son coupé. Les règles qui s'en servent restent des conventions de prudence : texte lisible son coupé, deux dispositifs superposés, rotation des dispositifs |
+| C9 | Relevé de 1 039 vidéos par type de contenu | 17 et 18/10/2026 | 821 reels Instagram de 27 comptes et 218 vidéos TikTok de 9 comptes, relevés par ScrapeCreators ; indice = vues divisées par la médiane des vues du même compte (les « j'aime » pour un compte qui ne publie pas ses vues) ; 63 vidéos décortiquées image par image (11 images chacune), coupes détectées par ffmpeg (seuil de scène 0,27), voix de 60 d'entre elles transcrite mot à mot avec ses temps ; classées en quatre types : valeur, news, publicité, cinématique | valeur : premier mot avant 0,4 s sur 16 vidéos sur 17 au-dessus de 8 fois leur médiane, 3 à 4,5 mots par seconde ; news (180 reels de 3 comptes) : une histoire humaine dans le titre va avec 1,40 fois la médiane (17 posts), un « What if » 1,22 (12), un record 1,25 (20), un grand nom de la tech seul 0,87 (44), moins de 30 s 1,22 ; publicité et cinématique : les meilleures révèlent leur prémisse avant 3 s ; durée : aucun effet sur Instagram (indice médian de 0,93 à 1,08 sur toutes les tranches, 406 reels) ; musique sous licence 0,95 contre 1,01 pour le son original (406 reels) |
+| C2 | Quatorze vidéos de référence | 13/10/2026 | 10 reels Instagram de 5 comptes et les 4 films X1 à X4, choisis par nous ; mouvement = écart moyen entre deux images successives à 30 i/s sur 96x96 ; premier son = première fenêtre de 50 ms au-dessus de -35 dBFS ; premier mot par transcription des 4 premières secondes ; texte lu toutes les 0,25 s | description, pas preuve de cause : un mouvement dans les 0,3 premières secondes sur 13 des 14, dont 7 par un changement net ; premier plan d'au moins 3 s : 10 sur 14 ; son à 0,2 s au plus tard : 10 sur 14 ; voix : premier mot avant 0,15 s sur 6 sur 6, première phrase de 11 à 20 mots, 3 sur 6 au-delà de 15 mots ; texte affiché à 0,25 s au plus tard sur 7 des 10 qui en portent, titre de 3 à 7 mots, jamais plus de 8, sur un support |
+| C10 | Le mouvement seconde par seconde de trois films de C2 | 02/11/2026 | X1, X2 et X3, les seuls films de C2 encore disponibles ce jour-là ; la mesure de C2 (écart moyen entre deux images successives, gris 96x96, 30 i/s, sur 255) moyennée sur chaque seconde complète, 41 secondes ; elle redonne le 17,1 de X1 dans les 0,3 premières secondes | médianes de 4,8 à 6,5 par film ; la dernière seconde de X2 et de X3 est leur carte de fin, presque immobile (0,16 et 0,08) ; hors carte de fin, la seconde la plus calme vaut 0,63, puis 0,75 et 0,79 : d'où le seuil de 0,6 du contrôle 6 (`controles.md`). Trois films de motion sans voix : le seuil se recalcule quand d'autres films de référence sont mesurés |
+| C11 | Les relevés de la veille | du 23/10 au 02/11/2026 | 2 885 vidéos distinctes, 1 065 reels Instagram et 1 820 vidéos TikTok, relevées avec leurs vues sur des comptes suivis et les recherches de la semaine, puis rapportées à la médiane de leur compte ; comptées une fois chacune par leur code Instagram ou leur identifiant TikTok | ce qui marche et ce qui ne marche pas, semaine après semaine : la matière des hooks, des structures et des rythmes de ce kit, en plus des relevés C1 à C10 |

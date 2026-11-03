@@ -1,0 +1,23 @@
+{
+  "name": "kit-reels",
+  "version": "0.3.0",
+  "description": "Un reel fini et vérifié avec Claude Code : format et objectif d'abord, script écrit pour être dit, voix ElevenLabs v3 scène par scène ou ta vidéo face caméra montée, vraies captures ou scène 3D, son à -14 LUFS ; en 9:16, 4:5, 1:1 ou 16:9, à 30 ou 60 images par seconde.",
+  "author": {
+    "name": "Guillaume Taub",
+    "url": "https://github.com/Taubiwan"
+  },
+  "license": "MIT",
+  "keywords": [
+    "reel",
+    "tiktok",
+    "short",
+    "video",
+    "voix",
+    "elevenlabs",
+    "hyperframes",
+    "francais",
+    "face-camera",
+    "3d",
+    "threejs"
+  ]
+}

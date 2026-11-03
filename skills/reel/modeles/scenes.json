@@ -1,0 +1,10 @@
+{
+ "voix": "NBjtCdChq5Ph56VnCM8Z",
+ "ton": "excited",
+ "scenes": [
+  {"id": "s01", "texte": "Chercher un appart à plusieurs, c'est ça."},
+  {"id": "s02", "texte": "Qui a vu quoi ? Qui a aimé quoi ? Plus personne ne suit."},
+  {"id": "s03", "texte": "Évidence, c'est l'app pour chercher en équipe."},
+  {"id": "s04", "texte": "Commente « équipe », et je t'envoie le lien de la liste d'attente."}
+ ]
+}

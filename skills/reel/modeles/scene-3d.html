@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 100vw; height: 100vh; overflow: hidden; background: #0b0d12; }
+      /* zones et tailles par format : references/ecran.md, section 1 */
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; font-family: Inter, sans-serif; color: #f5f6f8;
+        --gauche: 80px; --droite: 150px; --titre-y: 300px; --titre: 120px; --st-y: 1150px; --st-h: 200px; --st: 76px;
+        --fin-y: 170px; --fin-h: 1330px; --fin: 120px; --fin-texte: 52px; }
+      #root[data-format="4:5"] { --gauche: 108px; --droite: 108px; --titre-y: 150px; --titre: 112px; --st-y: 1010px; --st-h: 170px; --st: 72px; --fin-y: 108px; --fin-h: 1134px; --fin: 110px; --fin-texte: 48px; }
+      #root[data-format="1:1"] { --gauche: 108px; --droite: 108px; --titre-y: 120px; --titre: 100px; --st-y: 800px; --st-h: 150px; --st: 68px; --fin-y: 108px; --fin-h: 864px; --fin: 100px; --fin-texte: 44px; }
+      #root[data-format="16:9"] { --gauche: 96px; --droite: 96px; --titre-y: 100px; --titre: 112px; --st-y: 830px; --st-h: 130px; --st: 72px; --fin-y: 54px; --fin-h: 918px; --fin: 120px; --fin-texte: 52px; }
+      /* en 1:1 et 16:9, les rayons montent jusqu'en haut de l'image : le titre se resserre (deux lignes, une ligne) sur un
+         fondu d'encre qui part avec lui */
+      #voile-haut { display: none; position: absolute; inset: 0; background: linear-gradient(#0b0d12 0%, #0b0d12 30%, rgba(11, 13, 18, 0) 52%); }
+      #root[data-format="1:1"] #voile-haut, #root[data-format="16:9"] #voile-haut { display: block; }
+      #root[data-format="1:1"] #titre { --titre: 88px; }
+      #root[data-format="1:1"] #t2, #root[data-format="1:1"] #t3 { display: inline-block; }
+      #root[data-format="1:1"] #t2 { margin-right: 0.24em; }
+      #root[data-format="16:9"] #titre { text-align: center; }
+      #root[data-format="16:9"] #titre span { display: inline-block; margin: 0 0.12em; }
+      #scene { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+      .zone { position: absolute; left: var(--gauche); right: var(--droite); }
+      #titre { top: var(--titre-y); font-size: var(--titre); font-weight: 800; line-height: 1.02; letter-spacing: -0.03em; }
+      #titre span { display: block; opacity: 0; }
+      #titre .accent { color: #8cbee8; }
+      #sous-titre { top: var(--st-y); height: var(--st-h); display: flex; align-items: center; justify-content: center; text-align: center; }
+      .st { position: absolute; font-size: var(--st); font-weight: 800; white-space: nowrap; opacity: 0;
+        -webkit-text-stroke: 10px #0b0d12; paint-order: stroke fill; }
+      .st .cle { background: #8cbee8; color: #0b0d12; -webkit-text-stroke: 0; padding: 0 0.18em; border-radius: 0.16em; }
+      #voile { position: absolute; inset: 0; opacity: 0; background: linear-gradient(#0b0d12 0%, #0b0d12 46%, rgba(11, 13, 18, 0) 66%); }
+      #fin { top: var(--fin-y); height: calc(var(--fin-h) * 0.38); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; opacity: 0; }
+      #fin .nom { font-size: var(--fin); font-weight: 800; letter-spacing: -0.03em; }
+      #fin .dit { font-size: var(--fin-texte); font-weight: 500; margin-top: 0.5em; max-width: 16em; }
+      #fin .outils { font-size: 30px; font-weight: 500; color: #a9b4c4; margin-top: 1.4em; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="10" data-width="1080" data-height="1920" data-format="9:16">
+      <canvas id="scene"></canvas>
+      <div id="voile-haut"></div>
+      <div id="titre" class="zone"><span id="t1">Le lait ?</span><span id="t2">Toujours</span><span id="t3" class="accent">au fond.</span></div>
+      <div id="sous-titre" class="zone"></div>
+      <div id="voile"></div>
+      <div id="fin" class="zone">
+        <div class="nom">kit-reels</div>
+        <div class="dit">Une vraie scène 3D, rendue image par image.</div>
+        <div class="outils">three.js 0.181.2 · HyperFrames 0.8.167</div>
+      </div>
+    </div>
+    <!-- les sous-titres : voix/sous-titres.json de voix.py, sans ceux que le titre dit déjà (0 à 2,39 s) -->
+    <script type="application/json" id="sous-titres">[
+ {"text": "Pour te faire", "start": 2.61, "end": 3.03},
+ {"text": "traverser", "start": 3.03, "end": 4.6},
+ {"text": "tous les rayons", "start": 4.6, "end": 5.52, "cle": "rayons"},
+ {"text": "Et au passage", "start": 5.72, "end": 6.96},
+ {"text": "ton panier", "start": 6.96, "end": 7.327, "cle": "panier"},
+ {"text": "se remplit", "start": 7.327, "end": 8.25}
+]</script>
+    <script>
+      // la scène 3D compte comme prête quand sa première image est dessinée (le module la charge après ce script)
+      window.__hf = window.__hf || {};
+      window.__hf.buildReady = window.__hf.buildReady || {};
+      window.__hf.buildReady["scene-3d"] = new Promise((r) => (window.__scenePrete = r));
+
+      const tl = gsap.timeline({ paused: true });
+      tl.fromTo("#t1", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.25, ease: "power3.out" }, 0);
+      tl.fromTo("#t2", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.25, ease: "power3.out", immediateRender: false }, 1.09);
+      tl.fromTo("#t3", { opacity: 0, y: 40, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "back.out(2)", immediateRender: false }, 1.39);
+      tl.to("#titre", { opacity: 0, y: -60, duration: 0.25, ease: "power2.in" }, 2.16);
+      tl.to("#voile-haut", { opacity: 0, duration: 0.35, ease: "power2.in" }, 2.16);
+
+      const zone = document.getElementById("sous-titre");
+      JSON.parse(document.getElementById("sous-titres").textContent).forEach((g, i) => {
+        const el = document.createElement("div");
+        el.className = "st";
+        el.id = "st" + i;
+        el.innerHTML = g.cle ? g.text.replace(g.cle, `<span class="cle">${g.cle}</span>`) : g.text;
+        zone.appendChild(el);
+        tl.set(el, { opacity: 1 }, g.start).set(el, { opacity: 0 }, g.end);
+        if (g.cle) tl.fromTo(el, { scale: 1 }, { scale: 1.1, duration: 0.1, yoyo: true, repeat: 1, ease: "power2.out", immediateRender: false }, g.start);
+      });
+
+      tl.to("#voile", { opacity: 1, duration: 0.4, ease: "power2.out" }, 8.1);
+      tl.fromTo("#fin", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out", immediateRender: false }, 8.15);
+      tl.to({}, { duration: 0.01 }, 9.99);
+      window.__timelines["main"] = tl;
+    </script>
+    <script type="module">
+      import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.181.2/+esm";
+
+      const root = document.getElementById("root");
+      const W = Number(root.dataset.width), H = Number(root.dataset.height);
+      const FOV = { "9:16": 64, "4:5": 52, "1:1": 48, "16:9": 36 }[root.dataset.format] || 64;
+
+      const canvas = document.getElementById("scene");
+      const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+      renderer.setSize(W, H, false);
+      renderer.setPixelRatio(1);
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1.15;
+      renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+      const FOND = 0x0b0d12;
+      const scene = new THREE.Scene();
+      scene.background = new THREE.Color(FOND);
+      scene.fog = new THREE.Fog(FOND, 7, 36);
+      const camera = new THREE.PerspectiveCamera(FOV, W / H, 0.05, 80);
+
+      // hasard à graine fixe : la même scène à chaque rendu
+      let graine = 20261102;
+      const hasard = () => ((graine = (graine * 1664525 + 1013904223) >>> 0) / 4294967296);
+
+      const toile = (w, h, dessin) => {
+        const c = document.createElement("canvas");
+        c.width = w; c.height = h;
+        dessin(c.getContext("2d"), w, h);
+        const t = new THREE.CanvasTexture(c);
+        t.colorSpace = THREE.SRGBColorSpace;
+        t.anisotropy = 4;
+        return t;
+      };
+
+      // le sol : un carrelage, pour que l'avancée se lise
+      const carrelage = toile(256, 256, (g, w, h) => {
+        g.fillStyle = "#1a1d24"; g.fillRect(0, 0, w, h);
+        g.fillStyle = "#14161c"; g.fillRect(0, 0, w / 2, h / 2); g.fillRect(w / 2, h / 2, w / 2, h / 2);
+        g.strokeStyle = "#262a33"; g.lineWidth = 4; g.strokeRect(0, 0, w, h);
+      });
+      carrelage.wrapS = carrelage.wrapT = THREE.RepeatWrapping;
+      carrelage.repeat.set(7, 30);
+      const sol = new THREE.Mesh(new THREE.PlaneGeometry(14, 60), new THREE.MeshStandardMaterial({ map: carrelage, roughness: 0.35, metalness: 0.15 }));
+      sol.rotation.x = -Math.PI / 2;
+      sol.position.z = -2;
+      scene.add(sol);
+
+      // les deux rayons : montants, tablettes, et 623 produits à étiquette
+      const metal = new THREE.MeshStandardMaterial({ color: 0x2b303a, roughness: 0.45, metalness: 0.6 });
+      const Z0 = -12.5, Z1 = 12, L = Z1 - Z0, ETAGES = [0.22, 0.82, 1.42, 2.02];
+      const etiquette = toile(64, 64, (g, w, h) => {
+        g.fillStyle = "#ffffff"; g.fillRect(0, 0, w, h);
+        g.fillStyle = "#f4f1ea"; g.fillRect(0, h * 0.32, w, h * 0.26);
+        g.fillStyle = "#3a3a3a"; g.fillRect(0, h * 0.62, w, h * 0.04);
+      });
+      const COULEURS = ["#c8553d", "#f28f3b", "#ffd5c2", "#588b8b", "#3d5a80", "#e0d68a", "#93b7be", "#8cbee8", "#d1495b", "#edae49", "#00798c", "#6a4c93"];
+      const produits = new THREE.InstancedMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshStandardMaterial({ map: etiquette, roughness: 0.55 }), 900);
+      const m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), couleur = new THREE.Color();
+      let n = 0;
+      for (const cote of [-1, 1]) {
+        const x = cote * 2.05;
+        const fondRayon = new THREE.Mesh(new THREE.BoxGeometry(0.06, 2.5, L), metal);
+        fondRayon.position.set(x + cote * 0.33, 1.25, Z0 + L / 2);
+        scene.add(fondRayon);
+        for (let z = Z0; z <= Z1; z += 2.45) {
+          const montant = new THREE.Mesh(new THREE.BoxGeometry(0.66, 2.5, 0.06), metal);
+          montant.position.set(x, 1.25, z);
+          scene.add(montant);
+        }
+        for (const y of ETAGES) {
+          const tablette = new THREE.Mesh(new THREE.BoxGeometry(0.7, 0.04, L), metal);
+          tablette.position.set(x, y, Z0 + L / 2);
+          scene.add(tablette);
+          for (let z = Z0 + 0.15; z < Z1 - 0.2 && n < 900;) {
+            const l = 0.16 + hasard() * 0.22, h = 0.24 + hasard() * 0.28, p = 0.3 + hasard() * 0.16;
+            m4.compose(new THREE.Vector3(x - cote * (0.35 - p / 2) + cote * 0.02, y + 0.02 + h / 2, z + l / 2), q, new THREE.Vector3(p, h, l));
+            produits.setMatrixAt(n, m4);
+            produits.setColorAt(n, couleur.set(COULEURS[Math.floor(hasard() * COULEURS.length)]));
+            n++;
+            z += l + 0.02 + hasard() * 0.04;
+          }
+        }
+      }
+      produits.count = n;
+      scene.add(produits);
+
+      // au fond : le frigo à lait, et la brique qu'on vient chercher
+      const brique = toile(256, 512, (g, w, h) => {
+        g.fillStyle = "#fbfbf8"; g.fillRect(0, 0, w, h);
+        g.fillStyle = "#3d7cc9"; g.fillRect(0, h * 0.58, w, h * 0.24);
+        g.fillStyle = "#3d7cc9"; g.font = "800 92px Inter, sans-serif"; g.textAlign = "center"; g.fillText("LAIT", w / 2, h * 0.47);
+        g.fillStyle = "#ffffff"; g.font = "600 34px Inter, sans-serif"; g.fillText("demi-écrémé", w / 2, h * 0.72);
+      });
+      const matBrique = new THREE.MeshStandardMaterial({ map: brique, roughness: 0.6 });
+      const toit = new THREE.MeshStandardMaterial({ color: 0xf2f2ee, roughness: 0.6 });
+      const faireBrique = (s) => {
+        const b = new THREE.Group();
+        const corps = new THREE.Mesh(new THREE.BoxGeometry(0.24 * s, 0.44 * s, 0.24 * s), matBrique);
+        corps.position.y = 0.22 * s;
+        const triangle = new THREE.Shape([new THREE.Vector2(-0.12 * s, 0), new THREE.Vector2(0.12 * s, 0), new THREE.Vector2(0, 0.09 * s)]);
+        const pignon = new THREE.Mesh(new THREE.ExtrudeGeometry(triangle, { depth: 0.24 * s, bevelEnabled: false }), toit);
+        pignon.position.set(0, 0.44 * s, -0.12 * s);
+        b.add(corps, pignon);
+        return b;
+      };
+      const frigo = new THREE.Group();
+      const caisse = new THREE.Mesh(new THREE.BoxGeometry(4.4, 2.9, 0.9), metal);
+      caisse.position.set(0, 1.45, -0.45);
+      const lumiereFroide = new THREE.Mesh(new THREE.PlaneGeometry(4.0, 2.5), new THREE.MeshBasicMaterial({ color: 0xd8ecff }));
+      lumiereFroide.position.set(0, 1.45, 0.02);
+      frigo.add(caisse, lumiereFroide);
+      for (const y of [0.25, 0.95, 1.65]) {
+        const t = new THREE.Mesh(new THREE.BoxGeometry(4.0, 0.04, 0.7), metal);
+        t.position.set(0, y, 0.36);
+        frigo.add(t);
+        for (let x = -1.8; x <= 1.81; x += 0.3) {
+          const b = faireBrique(1);
+          b.position.set(x, y + 0.02, 0.45);
+          frigo.add(b);
+        }
+      }
+      frigo.position.z = Z0 - 1.8;
+      scene.add(frigo);
+
+      const heros = faireBrique(2.4);
+      heros.position.set(0, 0.42, -11.6);
+      const socle = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.55, 0.42, 48), new THREE.MeshStandardMaterial({ color: 0x1e222b, roughness: 0.3, metalness: 0.4 }));
+      socle.position.set(0, 0.21, -11.6);
+      scene.add(heros, socle);
+
+      // la lumière : une base douce, des néons chauds tout le long, le froid du frigo au fond
+      scene.add(new THREE.HemisphereLight(0xdfe8ff, 0x1a1c22, 1.1));
+      for (const z of [9, 3, -3, -9]) {
+        const p = new THREE.PointLight(0xfff1dc, 22, 11, 2);
+        p.position.set(0, 3.0, z);
+        scene.add(p);
+      }
+      const froid = new THREE.PointLight(0xbfe0ff, 30, 9, 2);
+      froid.position.set(0, 1.6, Z0 - 0.6);
+      scene.add(froid);
+      const spot = new THREE.SpotLight(0xffffff, 60, 8, 0.5, 0.6, 2);
+      spot.position.set(1.2, 3.2, -9.6);
+      spot.target = heros;
+      scene.add(spot);
+
+      // la caméra : avancée lente, traversée du rayon, arrivée devant la brique, puis un quart de tour autour d'elle
+      const doux = (a, b, t) => { const x = Math.min(1, Math.max(0, (t - a) / (b - a))); return x * x * (3 - 2 * x); };
+      const mix = (a, b, k) => a + (b - a) * k;
+      const cible = new THREE.Vector3();
+      function renderAt(t) {
+        const avance = doux(0, 8.1, t);
+        let z = mix(11.5, -9.2, avance * avance * (1.6 - 0.6 * avance));
+        let x = Math.sin(t * 0.9) * 0.28 * (1 - doux(6, 8.1, t));
+        let y = mix(1.55, 1.25, doux(5, 8.1, t));
+        // la fin : on recule et on monte un peu, la brique passe dans la moitié basse, sous la carte de fin
+        const fin = doux(7.9, 10, t);
+        const tour = fin * 0.38;               // l'arc reste dans l'allée : x ≤ 1,1 m, les rayons commencent à 1,7 m
+        if (tour > 0) {
+          const r = mix(11.6 + z, 2.9, fin);
+          x = Math.sin(tour) * r;
+          z = -11.6 + Math.cos(tour) * r;
+          y = mix(y, 1.75, fin);
+        }
+        camera.position.set(x, y, z);
+        cible.set(0, mix(mix(1.25, 0.95, doux(4, 8.1, t)), 1.85, fin), mix(-14, -11.6, doux(5.5, 8.1, t)));
+        camera.lookAt(cible);
+        heros.rotation.y = -0.35 + t * 0.08;
+        renderer.render(scene, camera);
+      }
+
+      window.addEventListener("hf-seek", (e) => renderAt(e.detail.time));
+      renderAt(window.__hfThreeTime || 0);
+      window.__scenePrete();
+    </script>
+  </body>
+</html>
