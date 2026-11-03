@@ -6,6 +6,7 @@
 | three.js 0.181.2, https://github.com/mrdoob/three.js | MIT | chargé par la scène 3D depuis `https://cdn.jsdelivr.net/npm/three@0.181.2/+esm`, version fixée ; jamais recopié ici |
 | GSAP 3.14.2, https://gsap.com | licence standard de GSAP (gratuite, usage commercial compris) | chargé par chaque composition depuis jsDelivr, comme le fait `hyperframes init` |
 | ElevenLabs | service payant à l'usage, conditions d'ElevenLabs | appelé par `scripts/voix.py` avec ta clé ; la voix générée suit la licence de ton offre et celle de la voix choisie |
+| Pexels, Pixabay, Openverse | licence de chaque banque (Pexels, Content License de Pixabay ; CC0, domaine public ou CC BY par Openverse) | appelés par `scripts/banque.py` avec tes clés gratuites (`PEXELS_API_KEY`, `PIXABAY_API_KEY`) ; Openverse sans clé ; chaque fichier téléchargé garde sa licence dans `banque.json` ; aucune image ni vidéo tierce n'est fournie ici |
 | ffmpeg | LGPL ou GPL selon ta version | installé par toi |
 | Python 3 | PSF | installé par toi ; les scripts n'utilisent que la bibliothèque standard |
 

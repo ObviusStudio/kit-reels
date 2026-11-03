@@ -27,6 +27,14 @@ La prise face caméra de l'essai est fabriquée (`outils/prise-essai.py` : une s
 | **Une note de mouvement** | chaque seconde du film est notée ; une seconde molle se reprend avant de te montrer le film (`scripts/porte_b.py`) | la seconde la plus calme de trois films de référence (relevé C10) |
 | **Des règles mesurées** | des études, des sources datées et des relevés (`references/sources.md`) | plus de 2 000 vidéos relevées et mesurées (relevés C9 et C11) |
 
+## Nouveau dans la 0.4 : les images
+
+| | Ce que ça fait | D'où ça vient |
+|---|---|---|
+| **Onze styles d'illustration** | vraies captures, interface flottante, 3D, formes à plat, données vivantes, collage à la Vox, isométrique, typographie en mouvement, banque teintée, dessin tracé, image générée étiquetée ; chacun avec sa fabrication dans HyperFrames, ses effets et son garde-fou (`references/illustrations.md`) | les effets du catalogue et les règles de scène |
+| **La question du style, avec une recommandation** | Claude lit ta charte, te recommande le style qui va à ce que la vidéo explique et à ta charte, te donne deux autres choix, et peut te montrer l'image du hook dans les trois | ce que la vidéo explique (`references/styles.md`, § 1) et ta charte |
+| **Images et vidéos libres de droit** | `scripts/banque.py` cherche sur Pexels, Pixabay et Openverse, télécharge la bonne taille et note la licence de chaque fichier ; `controler` refuse un fichier sans licence notée et donne les crédits à mettre dans la légende | licences relues le 03/11/2026 |
+
 ## Pourquoi ce kit
 
 Le 01/11/2026, j'ai testé un skill gratuit qui promettait de monter des reels, de la voix à la musique (`reel-builder`, dépôt `Ootto-AI/claude-content-skills`), sur trois de mes projets : StoryForKid, Evidnce et Obvius Studio. Même commande, un Claude neuf à chaque fois.
@@ -50,7 +58,7 @@ Mesuré avec Whisper large-v3 et ffmpeg ; les reels des deux tests et leurs mesu
 | Point de départ | un sujet | le format et l'objectif, puis la structure qui va avec |
 | Voix | rien : la voix de l'ordinateur, ou toi | ElevenLabs v3 scène par scène, débit mesuré, reprise si elle va trop vite, mots clés relus |
 | Musique et son | rien | une musique sous la voix qui se baisse quand on parle, un bruitage par information, master à -14 LUFS |
-| Images | des interfaces recréées | tes vraies captures, en perspective ou dans un vrai modèle de téléphone |
+| Images | des interfaces recréées | tes vraies captures, en perspective ou dans un vrai modèle de téléphone ; onze styles d'illustration proposés selon le sujet et ta charte ; des images et vidéos libres de droit, licence notée |
 | Style et effets | au hasard du prompt | douze styles et un catalogue d'effets, chacun lié à une information |
 | Vérification | à l'œil | un script mesure le MP4 : format, cadence, durée, volume, musique, images figées, débit, mots entendus, sous-titres calés sur la voix, image 0, note de mouvement de chaque seconde ; puis seize contrôles et un relecteur à part |
 | Fin | « Commente MOT », rien derrière | le message privé prêt, et le rappel de brancher la réponse automatique |
@@ -101,7 +109,7 @@ Ou plus précis :
 /reel une scène 3D sur le lait au fond du magasin, en 60 images par seconde
 ```
 
-Claude te pose quatre questions au plus (format, objectif, mot à commenter, voix), avec sa réponse recommandée. Puis il te montre le storyboard et quatre images avant de fabriquer. À la fin, tu as `final.mp4`, la légende et le message privé à envoyer. Rien n'est publié à ta place.
+Claude te pose cinq questions au plus (format, objectif, style des images, mot à commenter, voix), avec sa réponse recommandée. Puis il te montre le storyboard et quatre images avant de fabriquer. À la fin, tu as `final.mp4`, la légende et le message privé à envoyer. Rien n'est publié à ta place.
 
 Si un autre skill s'appelle aussi `reel` chez toi : `/kit-reels:reel`.
 
@@ -130,19 +138,20 @@ Objectifs : vues et partages, abonnés, commentaires (puis message privé), enre
 skills/reel/
   SKILL.md                 l'ordre de marche et les règles
   references/              structures, hooks, voix, écran, son, HyperFrames, vérification,
-                           styles, effets, règles de scène, contrôles, sources
+                           styles, effets, styles d'illustration et banques, règles de scène, contrôles, sources
   scripts/voix.py          la voix ElevenLabs v3 scène par scène (ou ta prise nettoyée), et ses sous-titres
   scripts/prise.py         ta vidéo face caméra : coupes sur l'énergie de ta voix, voix montée, contrôle des blancs
   scripts/formats.py       le même reel en 4:5, 1:1 et 16:9
   scripts/son.py           musique, bruitages, master à -14 LUFS
   scripts/verifier.py      les mesures du MP4 fini
+  scripts/banque.py        images et vidéos libres de droit (Pexels, Pixabay, Openverse), licence notée
   scripts/porte_b.py       image 0, zones, note de mouvement, déterminisme, tirets (lancé par verifier.py)
   modeles/                 scenes.json, storyboard.md, charte.md, scene-3d.html (la scène 3D éprouvée)
 exemples/                  les reels du test, V1 et V2
 outils/                    propre.py (rien de privé avant publication), prise-essai.py (une prise face caméra d'essai)
 ```
 
-Chaque script a son autotest : `python3 skills/reel/scripts/voix.py --autotest` (de même pour `prise.py`, `formats.py`, `son.py`, `verifier.py` et `porte_b.py`).
+Chaque script a son autotest : `python3 skills/reel/scripts/voix.py --autotest` (de même pour `prise.py`, `formats.py`, `son.py`, `verifier.py`, `banque.py` et `porte_b.py`).
 
 ## Licence
 
