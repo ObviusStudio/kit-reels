@@ -42,6 +42,7 @@ Chacune de ces quatre choses a été rendue et mesurée le 02/11/2026 avant d'ê
 5. **Ne fouille pas l'ordinateur** : ni clé, ni fichier hors du dossier du projet. Une clé ElevenLabs dans l'environnement vaut accord pour la voix du reel : annonce le nombre de caractères avant de lancer.
 6. **Un seul mot à commenter**, identique à la voix, à l'écran et dans la légende. Dis que la réponse automatique est à brancher avant de publier : sans elle, personne ne reçoit rien.
 7. **Rien n'est publié.** Tu livres le MP4, la légende et le message privé ; la publication reste à la personne.
+8. **La charte est celle de la personne.** Son `charte.md` (modèle `modeles/charte.md`) s'il existe ; sinon relève-la sur son site ou son appli au moment de la source (fond, texte, accent, polices, logo), écris-la dans `charte.md` et montre-la avec le storyboard. Jamais les couleurs ni les polices d'un exemple ou d'une autre marque : la scène 3D modèle se règle par ses variables `--fond`, `--texte`, `--accent` et `--police`.
 
 ## L'ordre de marche
 

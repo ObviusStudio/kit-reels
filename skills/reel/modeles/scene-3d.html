@@ -6,9 +6,11 @@
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
-      html, body { width: 100vw; height: 100vh; overflow: hidden; background: #0b0d12; }
+      /* la charte de la marque (modeles/charte.md) : remplace ces quatre valeurs par les siennes, jamais par celles d'un exemple */
+      :root { --fond: #0b0d12; --texte: #f5f6f8; --accent: #ffb000; --police: Inter, sans-serif; }
+      html, body { width: 100vw; height: 100vh; overflow: hidden; background: var(--fond); }
       /* zones et tailles par format : references/ecran.md, section 1 */
-      #root { position: relative; width: 100%; height: 100%; overflow: hidden; font-family: Inter, sans-serif; color: #f5f6f8;
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; font-family: var(--police); color: var(--texte);
         --gauche: 80px; --droite: 150px; --titre-y: 300px; --titre: 120px; --st-y: 1150px; --st-h: 200px; --st: 76px;
         --fin-y: 170px; --fin-h: 1330px; --fin: 120px; --fin-texte: 52px; }
       #root[data-format="4:5"] { --gauche: 108px; --droite: 108px; --titre-y: 150px; --titre: 112px; --st-y: 1010px; --st-h: 170px; --st: 72px; --fin-y: 108px; --fin-h: 1134px; --fin: 110px; --fin-texte: 48px; }
@@ -27,11 +29,11 @@
       .zone { position: absolute; left: var(--gauche); right: var(--droite); }
       #titre { top: var(--titre-y); font-size: var(--titre); font-weight: 800; line-height: 1.02; letter-spacing: -0.03em; }
       #titre span { display: block; opacity: 0; }
-      #titre .accent { color: #8cbee8; }
+      #titre .accent { color: var(--accent); }
       #sous-titre { top: var(--st-y); height: var(--st-h); display: flex; align-items: center; justify-content: center; text-align: center; }
       .st { position: absolute; font-size: var(--st); font-weight: 800; white-space: nowrap; opacity: 0;
-        -webkit-text-stroke: 10px #0b0d12; paint-order: stroke fill; }
-      .st .cle { background: #8cbee8; color: #0b0d12; -webkit-text-stroke: 0; padding: 0 0.18em; border-radius: 0.16em; }
+        -webkit-text-stroke: 10px var(--fond); paint-order: stroke fill; }
+      .st .cle { background: var(--accent); color: var(--fond); -webkit-text-stroke: 0; padding: 0 0.18em; border-radius: 0.16em; }
       #voile { position: absolute; inset: 0; opacity: 0; background: linear-gradient(#0b0d12 0%, #0b0d12 46%, rgba(11, 13, 18, 0) 66%); }
       #fin { top: var(--fin-y); height: calc(var(--fin-h) * 0.38); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; opacity: 0; }
       #fin .nom { font-size: var(--fin); font-weight: 800; letter-spacing: -0.03em; }
@@ -105,7 +107,7 @@
       renderer.toneMappingExposure = 1.15;
       renderer.outputColorSpace = THREE.SRGBColorSpace;
 
-      const FOND = 0x0b0d12;
+      const FOND = new THREE.Color(getComputedStyle(document.documentElement).getPropertyValue("--fond").trim() || "#0b0d12").getHex();   // le fond de la charte
       const scene = new THREE.Scene();
       scene.background = new THREE.Color(FOND);
       scene.fog = new THREE.Fog(FOND, 7, 36);
@@ -146,7 +148,7 @@
         g.fillStyle = "#f4f1ea"; g.fillRect(0, h * 0.32, w, h * 0.26);
         g.fillStyle = "#3a3a3a"; g.fillRect(0, h * 0.62, w, h * 0.04);
       });
-      const COULEURS = ["#c8553d", "#f28f3b", "#ffd5c2", "#588b8b", "#3d5a80", "#e0d68a", "#93b7be", "#8cbee8", "#d1495b", "#edae49", "#00798c", "#6a4c93"];
+      const COULEURS = ["#c8553d", "#f28f3b", "#ffd5c2", "#588b8b", "#3d5a80", "#e0d68a", "#93b7be", "#7fb069", "#d1495b", "#edae49", "#00798c", "#6a4c93"];
       const produits = new THREE.InstancedMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshStandardMaterial({ map: etiquette, roughness: 0.55 }), 900);
       const m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), couleur = new THREE.Color();
       let n = 0;

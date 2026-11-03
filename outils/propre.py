@@ -9,6 +9,7 @@ MOTIFS = {
     "clé d'API": re.compile(r"\b(sk-ant-[\w-]{20,}|sk-[A-Za-z0-9]{32,}|ghp_[A-Za-z0-9]{30,}|AKIA[0-9A-Z]{16})\b"),
     "clé recopiée": re.compile(r"(?i)(api[_-]?key|xi-api-key|token)\s*[=:]\s*['\"][A-Za-z0-9_\-]{20,}['\"]"),
     "chemin de la machine": re.compile(r"/Users/[A-Za-z0-9._-]+|/private/tmp/|/home/[a-z0-9._-]+/|[A-Z]:\\\\Users\\\\"),
+    "couleur de la charte de taubiwan.ai": re.compile(r"(?i)#0a0f16|#8cbee8"),   # le kit prend la charte de la personne, jamais celle de son auteur
 }
 LOURD = 5 * 1024 * 1024
 
@@ -41,8 +42,8 @@ def autotest():
     with tempfile.TemporaryDirectory() as d:
         open(os.path.join(d, "ok.md"), "w").write("export ELEVENLABS_API_KEY=…\n")
         assert scanner(d) == []
-        open(os.path.join(d, "ko.md"), "w").write("voir /Users/quelquun/projet et sk_" + "a" * 48 + "\n")
-        assert len(scanner(d)) == 2, scanner(d)
+        open(os.path.join(d, "ko.md"), "w").write("voir /Users/quelquun/projet et sk_" + "a" * 48 + "\naccent : #8CBEE8\n")
+        assert len(scanner(d)) == 3, scanner(d)
     print("autotest propre : 2 contrôles passés")
 
 
