@@ -29,7 +29,7 @@ Pour tous : carte de fin `end-card`, hook à l'image 0 et texte à 0,3 s au plus
 - Beau : un mot géant puis la phrase 5 fois plus petite, chaque mot prend son poids, du maigre au gras, le logo devient l'en-tête de la vraie page.
 - Rythme, typo : 5 plans de 1,1 s et un plan de 7 s pour la page ; mot de 250 px d'encre sur 80 à 100 % de la colonne.
 - Mouvement, transitions : mise au point en 0,2 s ; la page se redresse en 1,6 s.
-- Son : musique sans voix, un son par information.
+- Son : musique sans voix ; dans la référence, un son par information (ici, les effets électro si tu les choisis : `son.md`, section 3).
 - Effets : `type-wall`, `ui-tilt`, `zoom-screen`, `proof-capture`.
 - Jamais : une image 0 noire ; une page inventée ; une offre dans un manifeste.
 - Prompt : manifesto kinetic typography, one giant word then the sentence at one fifth the size, words gaining weight from light to bold, real page tilts then straightens
@@ -51,7 +51,7 @@ Pour tous : carte de fin `end-card`, hook à l'image 0 et texte à 0,3 s au plus
 - Beau : un plan unique où chaque scène sort de la précédente, texte au-dessus et preuve dessous, jamais deux idées.
 - Rythme, typo : 15 s sans coupe, 13 événements, carte de fin de 1,5 s ; grotesque demi-grasse de 90 px, 2 lignes de 13 à 18 caractères.
 - Mouvement, transitions : ease-out long, entrées de 0,3 à 0,5 s ; chaque raccord naît d'un élément à l'écran.
-- Son : un son par information ; whoosh seulement si l'élément apporte l'information.
+- Son : dans la référence, un son par information, un whoosh seulement si l'élément apporte l'information (ici, les effets électro si tu les choisis : `son.md`, section 3).
 - Effets : `ui-result`, `proof-capture`, `word-swap`, `ui-tilt`, `checklist-sync`.
 - Jamais : un mot qui change plus de 3 fois ; une fausse capture.
 - Prompt : single continuous shot, no hard cuts, text on top and visual proof below, real phone frame, column brakes onto the chosen card
@@ -106,7 +106,7 @@ Pour tous : carte de fin `end-card`, hook à l'image 0 et texte à 0,3 s au plus
 - Beau : split horizontal : en haut l'interface ou un graphique, en bas une personne, sous-titre sur plaque sombre posée sur la couture.
 - Rythme, typo : premier changement avant 1,5 s, puis toutes les 1,5 à 2,5 s ; sous-titres de 84 px vers y 1350, mot clé sur plaque d'accent.
 - Mouvement, transitions : l'illustration bouge, la moitié basse reste lisible ; la couture reste fixe (y 1100-1200).
-- Son : bruitages posés sur une information, jamais de riser.
+- Son : dans la référence, des bruitages posés sur une information, jamais de riser (ici, les effets électro si tu les choisis : `son.md`, section 3).
 - Effets : `split-illustration`, `split-source`, `caption-payoff`, `proof-capture`, `strike-replace`.
 - Jamais : un claim repris sans vérification ni sans sa réfutation sur le même écran.
 - Prompt : horizontal split screen, real interface or clean graphic on top, warm interior below, small caps caption on a dark plate on the seam

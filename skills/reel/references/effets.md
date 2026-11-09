@@ -12,7 +12,7 @@ Ce catalogue dit quel effet montre quelle information, comment le fabriquer et q
 2. **Aller à la famille** de cette information, dans le catalogue ci-dessous.
 3. **Prendre un effet permis par le kit** (son fichier d'effets). Jamais un effet `à juger`, jamais un effet écarté. Sans kit : un effet `éprouvé` est permis, un effet `à l'essai` se signale à la validation.
 4. **Écrire son id** dans la beat map et **tenir son garde-fou**. Si le garde-fou ne peut pas être tenu (pas de vraie capture, pas de source, pas de personne filmée), l'effet est retiré, jamais remplacé par un décor.
-5. **Poser le son** de la famille (voir « Le son de chaque famille ») : un son par information, jamais par plan.
+5. **Poser le son** choisi pour le projet : avec les effets électro, un effet par information qui arrive, jamais par plan (« Le son de chaque famille ») ; avec une musique seule, rien de plus.
 
 Le contrôle avant export vérifie que chaque effet de la beat map est un id de ce fichier, permis par le kit ; les effets à l'essai sont nommés dans le compte rendu de validation.
 
@@ -235,7 +235,7 @@ Un effet écarté ne revient que sur un accord écrit et daté. Un rejet qui vis
 
 ## 5. Le son de chaque famille
 
-Un son par information qui arrive à l'image, jamais par plan (§ 6, § 9, § 12). Niveaux : une seule cible, le master à -14 LUFS intégré et -1 dBTP au plus, la voix réglée pour l'atteindre, la musique 12 dB sous la voix (`regles-de-scene.md` § 6). Bruitage courant : sous la voix et la musique, à mesurer sur le premier rendu. Le gros payoff porte le son le plus fort du film (crête de loudness à court terme, `regles-de-scene.md` § 6), une fois ; pour une pièce muette, il se marque autrement (`regles-de-scene.md` § 11) ; les 0,5 à 1 s qui le précèdent retirent le son. Aucun son sur une coupe sans information ni pendant la respiration. Le kit peut retirer d'autres sons (produit du coucher : ni whoosh, ni impact, ni notification ; carte de fin silencieuse). Bibliothèque : bruitages libres de droits ou jeu généré à la main, jamais un son de glitch.
+Le son se choisit à chaque projet (`regles-de-scene.md` § 6), et jamais un son calculé. Avec les effets électro (ElevenLabs, palette de `son.md` : whoosh pour une entrée, impact pour un mot géant ou un chiffre, blip pour une interface, glitch pour un compteur, frappe pour une ligne qui s'écrit, montée vers une révélation, stab pour la carte de fin), un son par information qui arrive à l'image, jamais par plan (§ 6, § 9, § 12) ; le tableau dit lequel, et un son hors de la palette est un vrai son, d'une banque libre de droits (licence notée) ou enregistré. Niveaux : une seule cible, le master à -14 LUFS intégré et -1 dBTP au plus, la voix réglée pour l'atteindre, la musique 8 à 14 dB sous la voix, les effets 3 dB au moins sous sa crête (`regles-de-scene.md` § 6). Bruitage courant : sous la voix et la musique, à mesurer sur le premier rendu. Le gros payoff porte le son le plus fort du film (crête de loudness à court terme, `regles-de-scene.md` § 6), une fois ; pour une pièce muette, il se marque autrement (`regles-de-scene.md` § 11) ; les 0,5 à 1 s qui le précèdent retirent le son. Aucun son sur une coupe sans information ni pendant la respiration. Le kit peut retirer d'autres sons (produit du coucher : ni whoosh, ni impact, ni notification ; carte de fin silencieuse). Bibliothèque : bruitages libres de droits ou jeu généré à la main, jamais un son de glitch.
 
 | Famille | Son | Jamais |
 |---|---|---|

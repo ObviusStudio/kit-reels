@@ -57,7 +57,7 @@ Mesuré avec Whisper large-v3 et ffmpeg ; les reels des deux tests et leurs mesu
 |---|---|---|
 | Point de départ | un sujet | le format et l'objectif, puis la structure qui va avec |
 | Voix | rien : la voix de l'ordinateur, ou toi | ElevenLabs v3 scène par scène, débit mesuré, reprise si elle va trop vite, mots clés relus |
-| Musique et son | rien | une musique sous la voix qui se baisse quand on parle, un bruitage par information, master à -14 LUFS |
+| Musique et son | rien | le son que tu choisis pour chaque film : une musique composée (ElevenLabs Music, son dernier accord sur la carte de fin, 11 dB sous la voix) ou des effets électro calés sur les animations ; master à -14 LUFS |
 | Images | des interfaces recréées | tes vraies captures, en perspective ou dans un vrai modèle de téléphone ; douze styles d'illustration proposés selon le sujet et ta charte ; des images et vidéos libres de droit, licence notée |
 | Style et effets | au hasard du prompt | douze styles et un catalogue d'effets, chacun lié à une information |
 | Vérification | à l'œil | un script mesure le MP4 : format, cadence, durée, volume, musique, images figées, débit, mots entendus, sous-titres calés sur la voix, image 0, note de mouvement de chaque seconde ; puis seize contrôles et un relecteur à part |
@@ -109,7 +109,7 @@ Ou plus précis :
 /reel une scène 3D sur le lait au fond du magasin, en 60 images par seconde
 ```
 
-Claude te pose cinq questions au plus (format, objectif, style des images, mot à commenter, voix), avec sa réponse recommandée. Puis il te montre le storyboard et quatre images avant de fabriquer. À la fin, tu as `final.mp4`, la légende et le message privé à envoyer. Rien n'est publié à ta place.
+Claude te pose cinq questions au plus (format, objectif, style des images, mot à commenter, voix et son), avec sa réponse recommandée. Puis il te montre le storyboard et quatre images avant de fabriquer. À la fin, tu as `final.mp4`, la légende et le message privé à envoyer. Rien n'est publié à ta place.
 
 Si un autre skill s'appelle aussi `reel` chez toi : `/kit-reels:reel`.
 
@@ -129,7 +129,7 @@ Objectifs : vues et partages, abonnés, commentaires (puis message privé), enre
 
 - Claude Code : ton abonnement.
 - ElevenLabs : environ 700 caractères pour un reel de 40 secondes, plus les reprises. L'offre gratuite donne 10 000 crédits par mois ; pour une marque, vérifie la licence commerciale de ton offre.
-- HyperFrames, three.js, la musique et les bruitages : gratuits, calculés sur ta machine.
+- HyperFrames et three.js : gratuits, sur ta machine. La musique composée ou les effets électro, si tu les choisis, se génèrent avec ta clé ElevenLabs (363 crédits pour 20 s de musique, 60 pour cinq effets, mesurés le 09/11/2026) ; sans clé, ta piste ou la version sans musique.
 - Ta prise face caméra : rien à payer, la transcription tourne sur ta machine.
 
 ## Les fichiers
@@ -142,7 +142,7 @@ skills/reel/
   scripts/voix.py          la voix ElevenLabs v3 scène par scène (ou ta prise nettoyée), et ses sous-titres
   scripts/prise.py         ta vidéo face caméra : coupes sur l'énergie de ta voix, voix montée, contrôle des blancs
   scripts/formats.py       le même reel en 4:5, 1:1 et 16:9
-  scripts/son.py           musique, bruitages, master à -14 LUFS
+  scripts/son.py           le son choisi : musique composée, effets électro ; master à -14 LUFS
   scripts/verifier.py      les mesures du MP4 fini
   scripts/banque.py        images et vidéos libres de droit (Pexels, Pixabay, Openverse), licence notée
   scripts/porte_b.py       image 0, zones, note de mouvement, déterminisme, tirets (lancé par verifier.py)

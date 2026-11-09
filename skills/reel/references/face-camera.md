@@ -51,7 +51,7 @@ Un sous-titre qui tomberait dans un blanc se pose sur le retour de ta voix, lu s
 
 ## 4. Les effets sur ta prise
 
-Copie ta prise dans le projet HyperFrames, colle `voix/plages.html` dans la racine, et les sous-titres dans `<script type="application/json" id="sous-titres">` (la balise que lit `verifier.py`). La prise joue muette ; `son.py` pose ta voix montée, la musique et les bruitages.
+Copie ta prise dans le projet HyperFrames, colle `voix/plages.html` dans la racine, et les sous-titres dans `<script type="application/json" id="sous-titres">` (la balise que lit `verifier.py`). La prise joue muette ; `son.py` pose ta voix montée et le son que tu as choisi (`son.md`).
 
 | Effet | Règle |
 |---|---|
@@ -73,7 +73,7 @@ Sous-titres en blanc avec un contour d'encre, sous le menton (y = 1150 à 1350 e
 ## 5. Vérifier
 
 ```bash
-python3 scripts/son.py --video renders/montage.mp4 --voix voix/voix.wav --align voix/align.json --bruitages bruitages.json -o final.mp4
+python3 scripts/son.py --video renders/montage.mp4 --voix voix/voix.wav --align voix/align.json -o final.mp4 --compose
 python3 scripts/verifier.py final.mp4 --align voix/align.json --mot montage --mots "Claude" \
   --absents "recommence" --sous-titres index.html --voix voix/voix.wav --face-camera
 ```

@@ -19,7 +19,7 @@ Un hook fort nomme une transformation concrète que la pièce va montrer, au pro
 | Première phrase dite | la même promesse que le texte, 15 mots au plus, le sujet d'abord, ni bonjour ni nom du compte |
 | Première image | montre déjà la promesse ou la tension : le résultat fini, un chiffre, l'objet du verdict. Jamais un fondu depuis le noir ni un logo plein écran |
 
-Le son de la première seconde : la voix, un clic ou un impact avant 0,3 s, jamais un silence. Le hook cache la réponse, jamais la question. Une première récompense (un chiffre, une image qui surprend) arrive avant 3 s ; le gros résultat tombe entre 60 et 80 % de la durée.
+Le son de la première seconde : la voix, la musique ou un effet (un `impact`) avant 0,3 s, jamais un silence. Le hook cache la réponse, jamais la question. Une première récompense (un chiffre, une image qui surprend) arrive avant 3 s ; le gros résultat tombe entre 60 et 80 % de la durée.
 
 ## 3. La méthode
 

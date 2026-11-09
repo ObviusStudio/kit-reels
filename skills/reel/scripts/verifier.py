@@ -3,7 +3,7 @@
 Usage :
   python3 verifier.py final.mp4 [--format 9:16] [--ips 30] [--align voix/align.json] [--mot équipe]
                       [--mots "Pilot,1500,L'IA"] [--absents "recommence"] [--sous-titres index.html --voix voix/voix.wav]
-                      [--projet .] [--carte 2] [--face-camera]
+                      [--projet .] [--carte 2] [--face-camera] [--sans-musique]
   python3 verifier.py --autotest
 
 --format : 9:16 (par défaut, 1080 x 1920), 4:5 (1080 x 1350), 1:1 (1080 x 1080) ou 16:9 (1920 x 1080).
@@ -16,9 +16,10 @@ modèle Parakeet si installé, voir references/verifier.md). Puis les contrôles
 l'image 0, une alerte sur les bandes hors de la zone du texte, la note de mouvement de chaque seconde (--carte : les secondes de
 la carte de fin, non notées, 2 par défaut) et, avec --projet (le dossier du projet HyperFrames), le déterminisme et les tirets
 longs de la composition. --face-camera : le film d'une prise face caméra ; la note de mouvement s'y dit pour mémoire,
-son seuil venant de films de motion sans voix (references/sources.md, C10). Chaque ligne dit OK ou À REVOIR ; la dernière dit VERIF_OK, ou VERIF_A_REVOIR et le nombre de défauts.
+son seuil venant de films de motion sans voix (references/sources.md, C10). Chaque ligne dit OK ou À REVOIR ; la dernière dit VERIF_OK, ou VERIF_A_REVOIR et le nombre de défauts. --sans-musique : le son choisi pour ce film n'a pas de musique (des effets seuls, ou la voix seule) :
+les silences entre les phrases sont voulus, une ligne INFO les dit au lieu d'un défaut.
 """
-import difflib, importlib.util, json, math, os, re, subprocess, sys, tempfile, unicodedata
+import contextlib, difflib, importlib.util, io, json, math, os, re, subprocess, sys, tempfile, unicodedata
 
 HF = ["npx", "--yes", "hyperframes@0.8.167"]
 FORMATS = {"9:16": (1080, 1920), "4:5": (1080, 1350), "1:1": (1080, 1080), "16:9": (1920, 1080)}
@@ -147,7 +148,7 @@ def lignes_porte_b(resultats, face_camera=False):
 
 
 def verifier(film, align=None, mot=None, mots=(), format_="9:16", ips=None, absents=(), sous_titres=None, voix_seule=None,
-             projet=None, carte=porte_b.CARTE, face_camera=False):
+             projet=None, carte=porte_b.CARTE, face_camera=False, sans_musique=False):
     defauts = []
     def ligne(ok, texte):
         print(("OK        " if ok else "À REVOIR  ") + texte)
@@ -168,8 +169,12 @@ def verifier(film, align=None, mot=None, mots=(), format_="9:16", ips=None, abse
     ligne(crete <= -0.5, f"crête {crete} dBTP (au plus -1, tolérance 0,5)")
     _, t = sortie("ffmpeg", "-nostats", "-i", film, "-vn", "-af", "silencedetect=noise=-45dB:d=0.4", "-f", "null", "-")
     trous = [(a, b) for a, b in lire_silences(t) if a < f["duree"] - 1.0]
-    ligne(not trous, "musique sous la voix, aucun trou de silence" if not trous else
-          "trous de silence (pas de musique ?) à " + ", ".join(f"{a:.1f} s ({b:.1f} s)" for a, b in trous[:5]))
+    if sans_musique:   # le son choisi pour ce film n'a pas de musique : les silences entre les phrases sont voulus
+        print("INFO      sans musique (choix du projet) : " + (f"{len(trous)} silence(s) de 0,4 s ou plus, non comptés : " + ", ".join(
+            f"{a:.1f} s ({b:.1f} s)" for a, b in trous[:5]) if trous else "aucun silence de 0,4 s ou plus"))
+    else:
+        ligne(not trous, "musique sous la voix, aucun trou de silence" if not trous else
+              "trous de silence (pas de musique ?) à " + ", ".join(f"{a:.1f} s ({b:.1f} s)" for a, b in trous[:5]))
     _, t = sortie("ffmpeg", "-nostats", "-i", film, "-an", "-vf", "freezedetect=n=0.003:d=1.0", "-f", "null", "-")
     fig = [(a, b) for a, b in lire_figees(t) if a < f["duree"] - 2.0]   # la carte de fin peut tenir
     ligne(not fig, "aucune image figée plus d'une seconde" if not fig else
@@ -248,7 +253,20 @@ def autotest():
     r = [(True, "image 0"), (True, "zones"), (False, "secondes faibles : 1-2 s")]
     assert [x[0] for x in lignes_porte_b(r)] == [True, True, False]                 # un film de motion : la seconde molle compte
     assert [x[0] for x in lignes_porte_b(r, face_camera=True)] == [True, True, "INFO"]  # une prise face caméra : pour mémoire
-    print("autotest vérification : 21 contrôles passés")
+    # témoin sans musique : une voix de 8,5 s qui se tait 1,5 s ; sans --sans-musique, ce silence est un défaut ; avec, une ligne INFO
+    with tempfile.TemporaryDirectory() as d:
+        film, sans, avec = os.path.join(d, "voix.mp4"), io.StringIO(), io.StringIO()
+        subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "lavfi", "-i", "testsrc2=d=8.5:s=360x450:r=30,scale=1080:1350", "-f", "lavfi",
+                        "-i", "sine=f=220:d=8.5", "-af", "volume='if(between(t,3,4.5),0,1)':eval=frame", "-pix_fmt", "yuv420p",
+                        "-c:a", "aac", "-shortest", film], check=True)
+        with contextlib.redirect_stdout(sans):
+            verifier(film, format_="4:5", ips=30)
+        with contextlib.redirect_stdout(avec):
+            verifier(film, format_="4:5", ips=30, sans_musique=True)
+    assert "À REVOIR  trous de silence" in sans.getvalue(), sans.getvalue()
+    assert "INFO      sans musique" in avec.getvalue() and "trous de silence" not in avec.getvalue(), avec.getvalue()
+    print("témoin sans musique : refusé sans l'option, accepté avec")
+    print("autotest vérification : 23 contrôles passés")
     porte_b.autotest()
 
 
@@ -266,5 +284,5 @@ if __name__ == "__main__":
         sys.exit("--format : " + ", ".join(FORMATS))
     ok = verifier(a[0], opt("--align"), opt("--mot"), liste("--mots"), opt("--format") or "9:16",
                   float(opt("--ips")) if opt("--ips") else None, liste("--absents"), opt("--sous-titres"), opt("--voix"),
-                  opt("--projet"), float(opt("--carte")) if opt("--carte") else porte_b.CARTE, "--face-camera" in a)
+                  opt("--projet"), float(opt("--carte")) if opt("--carte") else porte_b.CARTE, "--face-camera" in a, "--sans-musique" in a)
     sys.exit(0 if ok else 1)

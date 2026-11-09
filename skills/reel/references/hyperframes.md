@@ -58,7 +58,7 @@ cd mon-reel
 | `html, body` en `100vw` et `100vh`, les zones en variables CSS réglées par `[data-format]` | la même composition se décline en quatre formats (`scripts/formats.py`, `references/ecran.md`, section 1) |
 | Une scène 3D : three.js 0.181.2 et son contrat (`references/ecran.md`, section 5) | elle se dessine depuis le temps de HyperFrames, jamais depuis l'horloge |
 
-La voix finale ne va pas dans la composition : on rend la vidéo muette, et `son.py` pose la voix, la musique et les bruitages. Les temps des scènes et des sous-titres viennent de `voix/align.json`.
+La voix finale ne va pas dans la composition : on rend la vidéo muette, et `son.py` pose la voix et le son choisi pour le film (`son.md`). Les temps des scènes et des sous-titres viennent de `voix/align.json`.
 
 ## 5. Quatre images fixes avant le rendu
 

@@ -69,7 +69,7 @@ ffmpeg -hide_banner -nostats -i $F -af ebur128=peak=true -f null - 2>&1 | grep -
 ffmpeg -hide_banner -i voix-musique.wav -af loudnorm=I=-14:TP=-1.5:LRA=11 -ar 48000 mixage.wav
 ```
 
-La seconde commande corrige le niveau d'un mixage ; relancer la première après correction. Cible du mixage, une seule : le master à -14 LUFS et -1 dBTP au plus (`regles-de-scene.md`, § 6). La voix se règle pour l'atteindre (seule, environ -14,3 LUFS) ; la musique joue à -18 LUFS quand elle est seule et descend à 12 dB sous la voix quand celle-ci parle. Un rendu sans piste audio (`ffprobe` ne liste aucun flux audio) saute ce bloc et le dit.
+La seconde commande corrige le niveau d'un mixage ; relancer la première après correction. Cible du mixage, une seule : le master à -14 LUFS et -1 dBTP au plus (`regles-de-scene.md`, § 6). La voix se règle pour l'atteindre (seule, environ -14,3 LUFS) ; une musique, si tu en as choisi une, se place 11 dB sous la voix, mesuré en LUFS, et remonte de 6 dB sur la carte de fin ; des effets restent 3 dB au moins sous la crête de la voix (`son.md`, section 4). Un rendu sans piste audio (`ffprobe` ne liste aucun flux audio) saute ce bloc et le dit.
 
 Bloc 5, carte de fin : lire la durée du dernier clip de scène (une ligne `s4` qui commence à 6,45 s et dure 1,85 s donne une carte de 1,85 s).
 
