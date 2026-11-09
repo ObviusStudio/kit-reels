@@ -35,6 +35,19 @@ La prise face caméra de l'essai est fabriquée (`outils/prise-essai.py` : une s
 | **La question du style, avec une recommandation** | Claude lit ta charte, te recommande le style qui va à ce que la vidéo explique et à ta charte, te donne deux autres choix, et peut te montrer l'image du hook dans les trois | ce que la vidéo explique (`references/styles.md`, § 1) et ta charte |
 | **Images et vidéos libres de droit** | `scripts/banque.py` cherche sur Pexels, Pixabay et Openverse, télécharge la bonne taille et note la licence de chaque fichier ; `controler` refuse un fichier sans licence notée et donne les crédits à mettre dans la légende | licences relues le 03/11/2026 |
 
+## Nouveau dans la 0.5 : refaire un reel qui a marché
+
+Tu n'as pas d'idée, mais tu as vu un reel qui a cartonné. Tu donnes son lien (ou son fichier) et une phrase sur ton entreprise, ou ton site.
+
+| | Ce que ça fait |
+|---|---|
+| **Décortiquer** | `scripts/decortiquer.py` sort les images, les mots, les coupes et les silences ; Claude écrit le plan par plan et le moule : ce qui reste quand on retire le sujet |
+| **Cinq angles pour ton entreprise** | cinq idées de familles différentes, chacune avec son hook, ce qu'on montre et le fait qu'il faut ; ce qui n'est pas confirmé reste marqué « à confirmer par toi » |
+| **Ta version** | tu choisis, Claude écrit sur la même structure, jamais les mots, les images ni la voix de l'original |
+| **Ce qui ne se reprend pas** | un reel porté par une célébrité ou une actualité, Claude te le dit (`references/refaire.md`) |
+
+Essayé le 07/11/2026 sur trois reels et trois entreprises, jusqu'au choix de l'angle. La suite, du script au film, suit l'ordre de marche habituel. Ce format ne te donne pas les vues de l'original : il te donne une structure qui a déjà marché ailleurs.
+
 ## Pourquoi ce kit
 
 Le 01/11/2026, j'ai testé un skill gratuit qui promettait de monter des reels, de la voix à la musique (`reel-builder`, dépôt `Ootto-AI/claude-content-skills`), sur trois de mes projets : StoryForKid, Evidnce et Obvius Studio. Même commande, un Claude neuf à chaque fois.
@@ -69,10 +82,16 @@ Mesuré avec Whisper large-v3 et ffmpeg ; les reels des deux tests et leurs mesu
 
 Il te faut [Claude Code](https://claude.com/claude-code), Node 22 ou plus, ffmpeg et python3.
 
-Dans Claude Code :
+En une ligne, dans ton terminal :
+
+```bash
+claude plugin marketplace add ObviusStudio/kit-reels && claude plugin install kit-reels@kit-reels && npx --yes hyperframes@0.8.167 skills && npx --yes hyperframes@0.8.167 models install parakeet
+```
+
+Ou pas à pas, dans Claude Code :
 
 ```
-/plugin marketplace add Taubiwan/kit-reels
+/plugin marketplace add ObviusStudio/kit-reels
 /plugin install kit-reels@kit-reels
 ```
 
@@ -107,6 +126,7 @@ Ou plus précis :
 /reel démo de mon appli ton-site.com, objectif : des commentaires, mot « essai »
 /reel monte ma vidéo prise.mp4, en 9:16 et en 4:5
 /reel une scène 3D sur le lait au fond du magasin, en 60 images par seconde
+/reel refais ce reel pour ma boulangerie à Vanves : https://www.instagram.com/reel/...
 ```
 
 Claude te pose cinq questions au plus (format, objectif, style des images, mot à commenter, voix et son), avec sa réponse recommandée. Puis il te montre le storyboard et quatre images avant de fabriquer. À la fin, tu as `final.mp4`, la légende et le message privé à envoyer. Rien n'est publié à ta place.
@@ -130,6 +150,7 @@ Objectifs : vues et partages, abonnés, commentaires (puis message privé), enre
 - Claude Code : ton abonnement.
 - ElevenLabs : environ 700 caractères pour un reel de 40 secondes, plus les reprises. L'offre gratuite donne 10 000 crédits par mois ; pour une marque, vérifie la licence commerciale de ton offre.
 - HyperFrames et three.js : gratuits, sur ta machine. La musique composée ou les effets électro, si tu les choisis, se génèrent avec ta clé ElevenLabs (363 crédits pour 20 s de musique, 60 pour cinq effets, mesurés le 09/11/2026) ; sans clé, ta piste ou la version sans musique.
+- Un reel à refaire à partir de son lien : une clé [ScrapeCreators](https://scrapecreators.com) (100 crédits offerts à l'inscription, sans carte ; un lien coûte un crédit ; ensuite 47 $ les 25 000 crédits, sans abonnement, tarifs lus le 07/11/2026), rangée dans ton terminal : `export SCRAPECREATORS_API_KEY=ta_clé` dans `~/.zshrc`. Sans clé, `yt-dlp`, gratuit, installé par toi, qu'Instagram peut bloquer (compte privé, connexion demandée).
 - Ta prise face caméra : rien à payer, la transcription tourne sur ta machine.
 
 ## Les fichiers
@@ -145,6 +166,7 @@ skills/reel/
   scripts/son.py           le son choisi : musique composée, effets électro ; master à -14 LUFS
   scripts/verifier.py      les mesures du MP4 fini
   scripts/banque.py        images et vidéos libres de droit (Pexels, Pixabay, Openverse), licence notée
+  scripts/decortiquer.py   le reel à refaire : images, mots, coupes, silences, et le contrôle des sept mots repris
   scripts/porte_b.py       image 0, zones, note de mouvement, déterminisme, tirets (lancé par verifier.py)
   modeles/                 scenes.json, storyboard.md, charte.md, scene-3d.html (la scène 3D éprouvée)
 exemples/                  les reels du test, V1 et V2

@@ -1,6 +1,6 @@
 ---
 name: reel
-description: À charger pour faire un reel, un TikTok ou un short fini, d'un site, d'une appli, d'une idée ou de ta vidéo face caméra, jusqu'au MP4 vérifié. Script écrit pour être dit, voix ElevenLabs v3, vraies captures, scène 3D, son à -14 LUFS ; en 9:16, 4:5, 1:1 ou 16:9, à 30 ou 60 images par seconde. Douze styles, douze styles d'illustration (captures, collage à la Vox, isométrique, 3D…) proposés selon le contenu et ta charte, des images et vidéos libres de droit avec leur licence, un catalogue d'effets, seize contrôles et un relecteur à part avant de montrer le film.
+description: À charger pour faire un reel, un TikTok ou un short fini, d'un site, d'une appli, d'une idée, de ta vidéo face caméra ou d'un reel viral à refaire pour ton entreprise (un lien et une phrase : Claude le décortique et te propose des angles), jusqu'au MP4 vérifié. Script écrit pour être dit, voix ElevenLabs v3, vraies captures, scène 3D, son à -14 LUFS ; en 9:16, 4:5, 1:1 ou 16:9, à 30 ou 60 images par seconde. Douze styles, douze styles d'illustration (captures, collage à la Vox, isométrique, 3D…) proposés selon le contenu et ta charte, des images et vidéos libres de droit avec leur licence, un catalogue d'effets, seize contrôles et un relecteur à part avant de montrer le film.
 ---
 
 # reel
@@ -15,6 +15,7 @@ Ce skill fait un reel fini : le format et l'objectif choisis d'abord, la structu
 | la voix | une clé ElevenLabs dans `ELEVENLABS_API_KEY` ; sans clé, la personne s'enregistre (`references/voix.md`, section 6) | `python3 scripts/voix.py --voix-dispo` |
 | le son | la même clé, si la personne choisit une musique composée ou des effets électro (`references/son.md`) ; sans clé, sa piste ou la version sans musique, jamais un son calculé | `test -n "$ELEVENLABS_API_KEY"` |
 | les images de banque | rien pour Openverse ; pour Pexels et Pixabay, des clés gratuites dans `PEXELS_API_KEY` et `PIXABAY_API_KEY`, demandées à la personne seulement si le film en prend (`references/illustrations.md`, section 5) | `python3 scripts/banque.py chercher "test" -n 1` |
+| le lien d'un reel à refaire | une clé ScrapeCreators (`SCRAPECREATORS_API_KEY`), ou `yt-dlp` ; sinon, le fichier de la vidéo | `test -n "$SCRAPECREATORS_API_KEY" \|\| yt-dlp --version`, `python3 scripts/decortiquer.py --selftest` |
 | la vérification | la transcription de HyperFrames ; Parakeet, plus juste, une fois : `npx --yes hyperframes@0.8.167 models install parakeet` | `python3 scripts/verifier.py --autotest` |
 
 Les scripts sont dans le dossier de ce skill (`scripts/`) ; lance-les par leur chemin complet.
@@ -39,6 +40,10 @@ Chacune de ces quatre choses a été rendue et mesurée le 02/11/2026 avant d'ê
 
 - **Douze styles d'illustration** : vraies captures, interface flottante, 3D, objet seul en studio, formes à plat, données vivantes, collage à la Vox, isométrique, typographie en mouvement, banque teintée, dessin tracé, image générée étiquetée. Claude te recommande celui qui va à ce que la vidéo explique et à ta charte, avec deux autres choix, et peut te montrer l'image du hook dans les trois (`references/illustrations.md`).
 - **Des images et des vidéos libres de droit** : `scripts/banque.py` cherche sur Pexels, Pixabay et Openverse, télécharge la bonne taille et note la licence de chaque fichier ; Unsplash se prend à la main et se note (`references/illustrations.md`, section 5).
+
+## Refaire un reel qui a marché (0.5)
+
+La personne donne le lien d'un reel, ou son fichier, et une phrase sur son entreprise, ou son site : suis `references/refaire.md` avant l'ordre de marche. `scripts/decortiquer.py` sort les images, les mots et les coupes ; Claude écrit le plan par plan et le moule, propose cinq angles pour l'entreprise, et attend son choix avant tout script. On garde la structure, jamais les mots, les images ni la voix de l'original.
 
 ## Les règles qui ne bougent pas
 
@@ -68,6 +73,7 @@ Chacune de ces quatre choses a été rendue et mesurée le 02/11/2026 avant d'ê
 
 | Fichier | Contenu |
 |---|---|
+| `references/refaire.md` | refaire un reel qui a marché pour une entreprise : décortiquer, le moule, ce qu'on garde, les cinq angles, le choix |
 | `references/structures.md` | les cinq formats, les cinq objectifs, la structure de chaque format, le choix par défaut |
 | `references/hooks.md` | le hook : trois couches, la grille sur 16, les formules |
 | `references/voix.md` | écrire pour être dit, la durée, les scènes, ElevenLabs, sans clé, pourquoi ces réglages |
@@ -83,4 +89,4 @@ Chacune de ces quatre choses a été rendue et mesurée le 02/11/2026 avant d'ê
 | `references/controles.md` | les seize contrôles du rendu, le relecteur à part et son prompt |
 | `references/sources.md` | d'où viennent les règles : études, sources datées, relevés de plus de 2 000 vidéos |
 | `modeles/` | `scenes.json`, `storyboard.md`, `charte.md` (ta marque : couleurs, polices, ton), `scene-3d.html` (la scène 3D éprouvée, à adapter) |
-| `scripts/` | `voix.py` (voix et sous-titres), `prise.py` (ta prise face caméra), `formats.py` (4:5, 1:1, 16:9), `son.py`, `verifier.py`, `banque.py` (images et vidéos libres de droit, licence notée), `porte_b.py` (image 0, zones, note de mouvement, déterminisme, tirets) |
+| `scripts/` | `voix.py` (voix et sous-titres), `prise.py` (ta prise face caméra), `formats.py` (4:5, 1:1, 16:9), `son.py`, `verifier.py`, `banque.py` (images et vidéos libres de droit, licence notée), `decortiquer.py` (le reel à refaire : images, mots, coupes), `porte_b.py` (image 0, zones, note de mouvement, déterminisme, tirets) |

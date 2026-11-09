@@ -8,6 +8,8 @@
 | ElevenLabs | service payant à l'usage, conditions d'ElevenLabs et d'Eleven Music (https://elevenlabs.io/music-terms) | appelé par `scripts/voix.py` et `scripts/son.py` avec ta clé ; la voix générée suit la licence de ton offre et celle de la voix choisie, la musique et les effets générés les conditions d'ElevenLabs et d'Eleven Music de ton offre |
 | Pexels, Pixabay, Openverse | licence de chaque banque (Pexels, Content License de Pixabay ; CC0, domaine public ou CC BY par Openverse) | appelés par `scripts/banque.py` avec tes clés gratuites (`PEXELS_API_KEY`, `PIXABAY_API_KEY`) ; Openverse sans clé ; chaque fichier téléchargé garde sa licence dans `banque.json` ; aucune image ni vidéo tierce n'est fournie ici |
 | ffmpeg | LGPL ou GPL selon ta version | installé par toi |
+| yt-dlp, https://github.com/yt-dlp/yt-dlp | Unlicense | installé par toi, seulement pour refaire un reel à partir de son lien ; sinon, tu donnes le fichier |
+| ScrapeCreators, https://scrapecreators.com | service payant au crédit, ses conditions d'utilisation | appelé avec ta clé, seulement pour refaire un reel à partir de son lien ; rien n'est inclus dans le kit |
 | Python 3 | PSF | installé par toi ; les scripts n'utilisent que la bibliothèque standard |
 
 `scripts/son.py` ne calcule ni musique ni bruitage : si tu les choisis, la musique se compose par ElevenLabs Music et les effets électro se génèrent par ElevenLabs ; sinon c'est ta piste, ou rien. Aucun fichier sonore tiers n'est fourni.
