@@ -3,12 +3,14 @@
 
 Usage :
   python3 scripts/decortiquer.py <lien ou fichier.mp4> -o reference/ [--langue en] [--ips 2]
+  python3 scripts/decortiquer.py --mots <dossier ou mots.json> <début> <fin>     les mots d'un passage, en secondes ou m:ss (0 11.5 ; 1:07.2 1:42) : « N mots, D s (M par minute) »
   python3 scripts/decortiquer.py --sept-mots <transcription de l'original> <ton script>     aucune suite de 7 mots reprise : SEPT_MOTS_OK
   python3 scripts/decortiquer.py --selftest
 
+DECORTIQUE.md donne aussi `## Les plans` (un plan entre deux coupes : début, durée, mots dits, images plans/NN.jpg à 720 px) et l'ouverture mesurée.
 Le reel reste dans ce dossier : il sert à lire la structure, il ne va jamais dans ton film (references/refaire.md).
 """
-import argparse, glob, json, os, re, shutil, subprocess, sys, tempfile, time, unicodedata, urllib.parse, urllib.request
+import argparse, bisect, glob, statistics, json, os, re, shutil, subprocess, sys, tempfile, time, unicodedata, urllib.parse, urllib.request
 
 HF = ["npx", "--yes", "hyperframes@0.8.167"]
 
@@ -132,25 +134,61 @@ def mots(film, dossier, langue):
     return m, ""
 
 
-def decortiquer(source, dossier, langue="en", transcrire=True, ips=2):
+def mots_du_plan(ms, a, b):
+    """Les mots dont le milieu (début + fin) / 2 tombe dans [a, b[ : chaque mot appartient ainsi à un seul passage."""
+    return [m for m in ms if a <= (m["start"] + m["end"]) / 2 < b]
+
+
+def plans(film, dossier, c, d, ms):
+    """Un plan entre deux coupes consécutives (le premier dès 0, le dernier jusqu'à la fin) : numéro, début, durée, mots, images.
+    Images : plans/NN.jpg au milieu du plan, à 720 px de large (le texte à l'écran se lit) ; au-delà de 2 s, NN-a.jpg (début + 0,15 s) et NN-b.jpg (fin - 0,2 s)."""
+    os.makedirs(os.path.join(dossier, "plans"), exist_ok=True)
+    bornes, rendu = [0.0] + list(c) + [d], []
+    for k in range(len(bornes) - 1):
+        a, b = bornes[k], bornes[k + 1]
+        nom = f"{k + 1:02d}"
+        temps = [(nom, (a + b) / 2)] + ([(nom + "-a", a + 0.15), (nom + "-b", b - 0.2)] if b - a > 2 else [])
+        for n, t in temps:
+            sortie("ffmpeg", "-v", "error", "-y", "-ss", f"{t:.3f}", "-i", film, "-frames:v", "1", "-vf", "scale=720:-2", "-q:v", "3", os.path.join(dossier, "plans", n + ".jpg"))
+        rendu.append({"n": k + 1, "debut": a, "duree": b - a, "mots": mots_du_plan(ms, a, b if k < len(bornes) - 2 else float("inf")),  # le dernier plan prend tout ce qui reste
+                      "images": ["plans/" + n + ".jpg" for n, _ in temps]})
+    return rendu
+
+
+def ouverture(c, ms, limite=3.0):
+    """(coupes avant 3 s, temps du premier mot ou None, mots des 3 premières secondes)."""
+    return sum(1 for t in c if t < limite), min((m["start"] for m in ms), default=None), mots_du_plan(ms, 0, limite)
+
+
+def texte_mots(ms):
+    return " ".join(m["text"].strip() for m in ms)
+
+
+def decortiquer(source, dossier, langue="en", transcrire=True, ips=2, mots_donnes=None):
     os.makedirs(dossier, exist_ok=True)
     film, meta = recuperer(source, dossier)
     d, c, pl = duree(film), coupes(film), planches(film, os.path.join(dossier, "planches"), ips)
     calme = silences(film)
-    ms, note = mots(film, dossier, langue) if transcrire else ([], "transcription non demandée")
-    texte = " ".join(m["text"].strip() for m in ms)
+    ms, note = mots(film, dossier, langue) if transcrire else (mots_donnes or [], "transcription non demandée")
+    texte = texte_mots(ms)
+    pls, (avant, premier, trois) = plans(film, dossier, c, d, ms), ouverture(c, ms)
+    durees = [p["duree"] for p in pls]
     open(os.path.join(dossier, "transcription.txt"), "w", encoding="utf-8").write(texte + "\n")
     chiffres = " · ".join(f"{k} : {v}" for k, v in meta.items() if v)
     lignes = ["# Le reel décortiqué", "", f"Source : {source}", *([chiffres] if chiffres else []), "",
               f"- Durée : {d:.2f} s ; format : {format_(film)}", f"- Coupes : {len(c)} ({len(c) / d * 60:.0f} par minute) : " + " ; ".join(f"{t:.2f}" for t in c),
               "- Silences (plus de 0,5 s sous -40 dB) : " + (" ; ".join(f"{a:.2f} à {b:.2f}" for a, b in calme) or "aucun"),
               f"- Planches : {len(pl)} dans planches/, {ips} images par seconde, de gauche à droite puis de haut en bas, le temps en bas à gauche",
-              f"- Les mots ({langue}) : {len(ms)}, soit {len(ms) / d * 60:.0f} par minute" + (f" ({note})" if note else "") + " ; texte dans transcription.txt, temps dans mots.json ; recoupe-les avec l'écran, surtout les noms et les chiffres", "",
+              f"- Les mots ({langue}) : {len(ms)}, soit {len(ms) / d * 60:.0f} par minute" + (f" ({note})" if note else "") + " ; texte dans transcription.txt, temps dans mots.json ; recoupe-les avec l'écran, surtout les noms et les chiffres",
+              f"- Plans : {len(pls)}, durée médiane {statistics.median(durees):.2f} s (le plus court {min(durees):.2f} s, le plus long {max(durees):.2f} s)",
+              f"- Ouverture : {avant} coupes avant 3 s ; premier mot à " + (f"{premier:.2f} s" if premier is not None else "aucun mot") + " ; les mots des 3 premières secondes : " + (f"« {texte_mots(trois)} »" if trois else "aucun mot"), "",
               "## Ce qui se dit", "", texte or "(rien)", "",
+              "## Les plans", "", "Un plan entre deux coupes : numéro · début · durée · mots dits (par leur milieu) · images (plans/NN.jpg au milieu, -a au début et -b à la fin pour un plan de plus de 2 s). Les coupes sont un plancher (voir references/refaire.md).", "",
+              *(f"- {p['n']} · {p['debut']:.2f} s · {p['duree']:.2f} s · " + (f"« {texte_mots(p['mots'])} »" if p["mots"] else "aucun mot") + " · " + ", ".join(p["images"]) for p in pls), "",
               # aucun tableau vide : en essai, deux Claude sur quatre écrivaient le leur plus bas, sous le mauvais titre
-              "À ajouter à la fin de ce fichier, en regardant les planches : `## Plan par plan` puis `## Le moule` (references/refaire.md, section 2).", ""]
+              "À ajouter à la fin de ce fichier, à partir de `## Les plans` et des images, en regardant les planches : `## Plan par plan` puis `## Le moule` (references/refaire.md, section 2).", ""]
     open(os.path.join(dossier, "DECORTIQUE.md"), "w", encoding="utf-8").write("\n".join(lignes))
-    print(f"DECORTIQUE_OK {os.path.join(dossier, 'DECORTIQUE.md')} · {d:.1f} s · {len(c)} coupes · {len(pl)} planches · {len(ms)} mots" + (f" ({note})" if note else ""))
+    print(f"DECORTIQUE_OK {os.path.join(dossier, 'DECORTIQUE.md')} · {d:.1f} s · {len(c)} coupes · {len(pls)} plans · {len(pl)} planches · {len(ms)} mots" + (f" ({note})" if note else ""))
     return d, c, pl
 
 
@@ -166,15 +204,56 @@ def sept_mots(original, script):
     return [" ".join(a[i:i + 7]) for i in range(len(a) - 6) if tuple(a[i:i + 7]) in deja]
 
 
+def temps_en_secondes(t):
+    """« 67.2 » ou « 1:07.2 » : des secondes."""
+    m, _, s = t.rpartition(":")
+    return (int(m) * 60 if m else 0) + float(s)
+
+
+def mots_du_passage(chemin, debut, fin):
+    """Les mots d'un passage de mots.json (le fichier ou son dossier) : (liste, durée en s)."""
+    fichier = os.path.join(chemin, "mots.json") if os.path.isdir(chemin) else chemin
+    if not os.path.isfile(fichier):
+        sys.exit("Pas de mots.json : " + chemin)
+    a, b = temps_en_secondes(debut), temps_en_secondes(fin)
+    if b <= a:
+        sys.exit("La fin doit suivre le début.")
+    return mots_du_plan(json.load(open(fichier, encoding="utf-8")), a, b), b - a
+
+
 def selftest():
     with tempfile.TemporaryDirectory() as d:
-        couleurs = "".join(f"color=c={c}:s=270x480:d=2:r=30[{c}];" for c in ("red", "blue", "white"))
+        couleurs = "".join(f"color=c={c}:s=270x480:d={2 if c != 'white' else 3}:r=30[{c}];" for c in ("red", "blue", "white"))
         film = os.path.join(d, "trois.mp4")
         subprocess.run(["ffmpeg", "-v", "error", "-y", "-filter_complex", couleurs + "[red][blue][white]concat=n=3:v=1[v]", "-map", "[v]", film], check=True)
-        duree_, c, pl = decortiquer(film, os.path.join(d, "a"), transcrire=False)
-        assert abs(duree_ - 6) < 0.2 and len(c) == 2 and abs(c[0] - 2) < 0.2 and abs(c[1] - 4) < 0.2, (duree_, c)
+        faux = [{"id": f"w{k}", "text": t, "start": a, "end": b} for k, (t, a, b) in enumerate((("un", 0.5, 0.9), ("deux", 1.8, 2.4), ("trois", 3.9, 4.3), ("quatre", 5.0, 5.5)))]
+        duree_, c, pl = decortiquer(film, os.path.join(d, "a"), transcrire=False, mots_donnes=faux)
+        assert abs(duree_ - 7) < 0.2 and len(c) == 2 and abs(c[0] - 2) < 0.2 and abs(c[1] - 4) < 0.2, (duree_, c)
         md = open(os.path.join(d, "a", "DECORTIQUE.md"), encoding="utf-8").read()
         assert pl and "`## Plan par plan`" in md and "|---|" not in md and "270 x 480, 30 i/s" in md, md
+        pls = plans(film, os.path.join(d, "p"), c, duree_, faux)  # 3 plans de 2, 2 et 3 s ; « deux » (milieu 2,1) et « trois » (milieu 4,1) chevauchent une coupe
+        assert [p["n"] for p in pls] == [1, 2, 3] and all(abs(p["duree"] - e) < 0.2 for p, e in zip(pls, (2, 2, 3))), pls
+        assert [[m["text"] for m in p["mots"]] for p in pls] == [["un"], ["deux"], ["trois", "quatre"]], pls
+        assert sum(len(p["mots"]) for p in pls) == len(faux)  # chaque mot dans un seul plan
+        vus = sorted(os.listdir(os.path.join(d, "p", "plans")))
+        assert vus == ["01.jpg", "02.jpg", "03-a.jpg", "03-b.jpg", "03.jpg"], vus  # -a et -b seulement pour le plan de plus de 2 s
+        for v in vus:
+            assert format_(os.path.join(d, "p", "plans", v)).startswith("720 x "), v
+        assert ouverture(c, faux) == (1, 0.5, faux[:2]), ouverture(c, faux)
+        assert ouverture([], []) == (0, None, [])  # témoin : sans mot, rien n'est inventé
+        for morceau in ("- Plans : 3, durée médiane 2.0", "- Ouverture : 1 coupes avant 3 s ; premier mot à 0.50 s ; les mots des 3 premières secondes : « un deux »", " s · « trois quatre » · plans/03.jpg, plans/03-a.jpg, plans/03-b.jpg"):
+            assert morceau in md, morceau
+        assert "## Les plans" in md
+        # --mots : le comptage par le milieu, en secondes ou en m:ss
+        os.makedirs(os.path.join(d, "m"))
+        json.dump([{"id": "0", "text": "un", "start": 60.0, "end": 61.0}, {"id": "1", "text": "deux", "start": 67.0, "end": 67.6}, {"id": "2", "text": "trois", "start": 71.9, "end": 72.5}], open(os.path.join(d, "m", "mots.json"), "w"))
+        assert temps_en_secondes("1:07.2") == 67.2 and temps_en_secondes("11.5") == 11.5 and temps_en_secondes("0") == 0
+        sel, dur = mots_du_passage(os.path.join(d, "m"), "1:07.2", "1:42")
+        assert [m["text"] for m in sel] == ["deux", "trois"] and abs(dur - 34.8) < 1e-9, sel
+        assert [m["text"] for m in mots_du_passage(os.path.join(d, "m", "mots.json"), "60", "67.2")[0]] == ["un"]  # « deux » (milieu 67,3) est au-delà
+        assert mots_du_passage(os.path.join(d, "m"), "0", "11.5")[0] == []  # témoin : aucun mot dans ce passage
+        sortie_ = subprocess.run([sys.executable, "-I", os.path.abspath(__file__), "--mots", os.path.join(d, "m"), "0", "11.5"], capture_output=True, text=True)
+        assert sortie_.returncode == 0 and sortie_.stdout.startswith("0 mots, 11.5 s (0 par minute)"), sortie_
         uni = os.path.join(d, "uni.mp4")  # témoin : sans changement de plan, aucune coupe
         subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "lavfi", "-i", "color=c=red:s=270x480:d=3:r=30", uni], check=True)
         assert decortiquer(uni, os.path.join(d, "b"), transcrire=False)[1] == []
@@ -208,6 +287,12 @@ def selftest():
 def main():
     if sys.argv[1:] == ["--selftest"]:
         return selftest()
+    if sys.argv[1:2] == ["--mots"] and len(sys.argv) == 5:
+        sel, dur = mots_du_passage(*sys.argv[2:5])
+        print(f"{len(sel)} mots, {dur:g} s ({len(sel) / dur * 60:.0f} par minute)")
+        if sel:
+            print(texte_mots(sel))
+        return
     if sys.argv[1:2] == ["--sept-mots"]:
         repris = sept_mots(open(sys.argv[2], encoding="utf-8").read(), open(sys.argv[3], encoding="utf-8").read())
         for r in repris:

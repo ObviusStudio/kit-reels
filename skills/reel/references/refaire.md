@@ -17,11 +17,11 @@ Sans reel : demande-le. Sans entreprise : demande une phrase. Aucune autre quest
 python3 scripts/decortiquer.py <lien ou fichier> -o reference/ --langue en
 ```
 
-`--langue` est la langue du reel. Si elle n'est pas la bonne, tu le vois sur les planches : relance. Le script rend `reference/DECORTIQUE.md`, les planches d'images, les mots, les coupes et les silences. Il mesure le son, il ne l'écoute pas : ce que tu ne peux pas trancher, dis-le. Regarde toutes les planches avant d'écrire. Un passage trop rapide ou un texte trop petit : relance dans un autre dossier avec `--ips 6`. La transcription se trompe sur les noms et les chiffres : recoupe-la avec l'écran. Le nombre de coupes est un plancher : une rafale de plans ou un décor qui change dans le plan lui échappent. C'est sur les planches que le rythme se lit.
+`--langue` est la langue du reel. Si elle n'est pas la bonne, tu le vois sur les planches : relance. Le script rend `reference/DECORTIQUE.md`, les planches d'images, les mots, les coupes et les silences. Il rend aussi `## Les plans` : un plan par entrée, mesuré (début, durée, mots dits, images `plans/NN.jpg` lisibles à 720 px), et les chiffres de l'ouverture (coupes avant 3 s, premier mot, mots des 3 premières secondes). Il mesure le son, il ne l'écoute pas : ce que tu ne peux pas trancher, dis-le. Regarde toutes les planches avant d'écrire. Un passage trop rapide ou un texte trop petit : relance dans un autre dossier avec `--ips 6`. La transcription se trompe sur les noms et les chiffres : recoupe-la avec l'écran. Le nombre de coupes est un plancher : une rafale de plans ou un décor qui change dans le plan lui échappent. C'est sur les planches que le rythme se lit.
 
 Puis ajoute à la fin de `DECORTIQUE.md` deux sections, sous ces titres exacts :
 
-`## Plan par plan` : un tableau, une ligne par plan ou par changement de rôle. Quand le texte change toutes les demi-secondes, regroupe par rôle.
+`## Plan par plan` : il part de `## Les plans` et des images `plans/NN.jpg`, il ne les recopie pas : il ajoute ce que tu lis sur les images (« On lit », « On voit ») et le rôle. Un tableau, une ligne par plan ou par changement de rôle. Quand le texte change toutes les demi-secondes, regroupe par rôle.
 
 | t (s) | On entend | On lit | On voit | Son rôle |
 |---|---|---|---|---|
@@ -94,7 +94,7 @@ Dans ta réponse : le reel en cinq lignes, le moule, ce qui ne se reprend pas, l
 
 1. Pose en un message les questions de l'ordre de marche encore ouvertes (style des images, mot à commenter, voix, charte), avec ta réponse recommandée, et fais confirmer les faits de l'angle.
 2. Écris un tableau à deux colonnes, rôle par rôle : « L'original fait » et « Ta version dit ». Chaque rôle a sa ligne ; un rôle qui saute a sa raison.
-3. Écris les dix candidats et garde trois hooks dans le moule, puis le script (`references/hooks.md`, `references/voix.md`). La durée reste à 20 % de l'original.
+3. Écris les dix candidats et garde trois hooks dans le moule, puis le script (`references/hooks.md`, `references/voix.md`). La durée reste à 20 % de l'original. Compte les mots de chaque rôle dans l'original : `python3 scripts/decortiquer.py --mots reference/ <début> <fin>` (secondes ou m:ss, par exemple `0 11.5` ou `1:07.2 1:42`). Chaque rôle de ta version reste à 10 % de ces mots.
 4. Passe `--sept-mots`. Chaque fait sur l'entreprise a sa source ; un fait public a son lien.
 
 ## 6. Fabriquer

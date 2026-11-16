@@ -32,6 +32,14 @@ Relis la liste, puis garde les bons passages : `python3 scripts/prise.py couper 
 
 Pourquoi l'énergie, et pas les dates de la transcription : elles avalent les silences, un mot s'étire sur la pause qui le suit. Pourquoi la prise nettoyée : sur la prise brute, le bruit de la pièce remplit les pauses (essayé : une virgule de 0,23 s, invisible sur la brute, restait un trou dans la voix montée).
 
+Avant de monter, regarde ce que tu gardes :
+
+```bash
+python3 scripts/prise.py brouillon coupes.json -o brouillon.mp4
+```
+
+Les plages de `coupes.json` sont mises bout à bout dans l'ordre de la liste (« source » se lit depuis le dossier de `coupes.json`), en 1080 x 1920, 30 i/s, le son à -14 LUFS. Le numéro de chaque plage s'écrit en haut à gauche (« 3/12 »), pour dire « retire la 3 » ; si ton ffmpeg ne sait pas écrire le texte, le brouillon se fait sans numéros et le dit. `brouillon.jpg` est une planche : le milieu de chaque plage, six par ligne, dans l'ordre. Ni sous-titres, ni effets, ni voix nettoyée : un brouillon pour choisir, jamais un rendu. Dernière ligne : `BROUILLON_OK`. Pour retirer une plage, enlève-la de `coupes.json` et refais le brouillon.
+
 ## 3. La voix montée et ses sous-titres
 
 ```bash

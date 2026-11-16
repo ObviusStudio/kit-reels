@@ -161,7 +161,7 @@ skills/reel/
   references/              structures, hooks, voix, écran, son, HyperFrames, vérification,
                            styles, effets, styles d'illustration et banques, règles de scène, contrôles, sources
   scripts/voix.py          la voix ElevenLabs v3 scène par scène (ou ta prise nettoyée), et ses sous-titres
-  scripts/prise.py         ta vidéo face caméra : coupes sur l'énergie de ta voix, voix montée, contrôle des blancs
+  scripts/prise.py         ta vidéo face caméra : coupes sur l'énergie de ta voix, voix montée, contrôle des blancs, brouillon à regarder avant de monter
   scripts/formats.py       le même reel en 4:5, 1:1 et 16:9
   scripts/son.py           le son choisi : musique composée, effets électro ; master à -14 LUFS
   scripts/verifier.py      les mesures du MP4 fini
